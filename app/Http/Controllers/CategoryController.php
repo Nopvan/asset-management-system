@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use App\Models\Item;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::paginate(10);
         return view('pages.categories.index', compact('categories'));
     }
 
@@ -59,5 +62,14 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect('/category')->with('success', 'Category has been deleted');
+    }
+
+    public function exportPdf()
+    {
+        $categories = Category::get()->chunk(10);
+
+        $pdf = PDF::loadView('pages.categories.pdf', compact('categories'));
+
+        return $pdf->download('categories.pdf');
     }
 }

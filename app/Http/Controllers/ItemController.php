@@ -6,12 +6,13 @@ use App\Models\category;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::with('category')->get();
+        $items = Item::with('category')->paginate(10);
         return view('pages.items.index',
             [
                 'items' => $items
@@ -81,4 +82,19 @@ class ItemController extends Controller
 
         return redirect('/item')->with('success', 'Item has been deleted');
     }
+
+    public function exportPdf()
+    {
+        // Ambil semua data item, terus bagi jadi per 10 item
+        $items = Item::with('category')->get()->chunk(10);
+
+        // Kirim ke view PDF yang udah kita siapin
+        $pdf = Pdf::loadView('pages.items.pdf', [
+            'items' => $items
+        ]);
+
+        // Download hasil PDF-nya
+        return $pdf->download('items.pdf');
+    }
+
 }
