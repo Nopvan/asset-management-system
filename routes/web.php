@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\AssetController;
 use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 
@@ -21,9 +22,9 @@ Route::get('/dashboard', function () {
     return view('pages.dashboard');
 });
 
-Route::get('/assets', function () {
-    return view('assets');
-});
+
+Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+Route::post('/assets/{id}/pinjam', [AssetController::class, 'pinjam'])->name('assets.pinjam');
 
 //Routes Item
 Route::get('/item', [ItemController::class, 'index']);

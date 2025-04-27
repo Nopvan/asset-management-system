@@ -6,7 +6,7 @@
         </a>
         <div class="d-flex align-items-center">
             <a class="nav-link text-white px-3" href="/">Home</a>
-            <a class="nav-link text-white px-3" href="/assets">Assets</a>
+            <a class="nav-link text-white px-3" href="/assets/">Assets</a>
             <a class="nav-link text-white px-3" href="/login">
                 <i class="fas fa-sign-in-alt me-2"></i>Login
             </a>
