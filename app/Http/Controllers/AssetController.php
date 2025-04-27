@@ -10,37 +10,46 @@ class AssetController extends Controller
 {
     public function index(Request $request)
     {
-        $kategori = Category::all();
+        // Ambil kategori yang memiliki item dengan qty > 0 dan kondisi good
+        $kategori = Category::whereHas('items', function($query) {
+            $query->where('qty', '>', 0)
+                  ->whereNotIn('conditions', ['lost', 'broken']);
+        }, '=', 1, 'and', function($query) {
+            $query->whereColumn('categories.id', 'items.cat_id'); // Perhatikan relasi disini
+        })->get();
+    
+        // Ambil lokasi yang memiliki item dengan qty > 0 dan kondisi good
         $lokasi = Item::select('locations')
-                    ->distinct()
+                    ->where('qty', '>', 0)
+                    ->whereNotIn('conditions', ['lost', 'broken'])
                     ->whereNotNull('locations')
+                    ->distinct()
                     ->pluck('locations');
-
-        $query = Item::with('category');
-
+    
+        $query = Item::with('category')
+                  ->where('qty', '>', 0)
+                  ->whereNotIn('conditions', ['lost', 'broken']);
+    
         // Filter pencarian
         if ($request->filled('nama')) {
             $query->where('item_name', 'like', '%' . $request->nama . '%');
         }
-
+    
         if ($request->filled('kategori_id')) {
-            $query->where('cat_id', $request->kategori_id);
+            $query->where('cat_id', $request->kategori_id); // Pastikan ini sesuai dengan kolom di tabel
         }
-
+    
         if ($request->filled('lokasi')) {
             $query->where('locations', 'like', '%' . $request->lokasi . '%');
         }
-
+    
         // Khusus pertama kali (tanpa filter), order qty terbanyak
         if (!$request->filled('nama') && !$request->filled('kategori_id') && !$request->filled('lokasi')) {
             $query->orderBy('qty', 'desc');
         }
-
-        $items = $query->where('qty', '>', 0)
-              ->whereNotIn('conditions', ['lost', 'broken'])
-              ->paginate(10)
-              ->withQueryString();
-
+    
+        $items = $query->paginate(10)->withQueryString();
+    
         return view('assets.index', compact('items', 'kategori', 'lokasi'));
     }
     
