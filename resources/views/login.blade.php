@@ -60,9 +60,9 @@
                             <h3 class="text-center mb-4">Login Akun</h3>
                             <form>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email"
-                                        placeholder="Masukkan Email" required>
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="username" class="form-control" id="username"
+                                        placeholder="Masukkan Username" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
