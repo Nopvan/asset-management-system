@@ -6,11 +6,23 @@ use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::get('/login', function(){
+    return view('login');
+});
+
+Route::get('/register', function(){
+    return view('register');
+})->name('register');
 
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
+});
+
+Route::get('/assets', function () {
+    return view('assets');
 });
 
 //Routes Item

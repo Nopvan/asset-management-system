@@ -43,10 +43,12 @@
                                         <td>{{ $item->locations }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <a href="{{ route('item.edit', $item->id) }}" class="btn btn-sm btn-warning mx-1">
+                                                <a href="{{ route('item.edit', $item->id) }}"
+                                                    class="btn btn-sm btn-warning mx-1">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                <button type="button" class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#confDelete-{{ $item->id }}">
+                                                <button type="button" class="btn btn-sm btn-danger mx-1"
+                                                    data-bs-toggle="modal" data-bs-target="#confDelete-{{ $item->id }}">
                                                     <i class="fas fa-eraser"></i>
                                                 </button>
                                             </div>
