@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Category;
+use App\Models\Borrow;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
@@ -15,7 +16,7 @@ class AssetController extends Controller
             $query->where('qty', '>', 0)
                   ->whereNotIn('conditions', ['lost', 'broken']);
         }, '=', 1, 'and', function($query) {
-            $query->whereColumn('categories.id', 'items.cat_id'); // Perhatikan relasi disini
+            $query->whereColumn('categories.id', 'items.cat_id');
         })->get();
     
         // Ambil lokasi yang memiliki item dengan qty > 0 dan kondisi good
@@ -36,7 +37,7 @@ class AssetController extends Controller
         }
     
         if ($request->filled('kategori_id')) {
-            $query->where('cat_id', $request->kategori_id); // Pastikan ini sesuai dengan kolom di tabel
+            $query->where('cat_id', $request->kategori_id); 
         }
     
         if ($request->filled('lokasi')) {
@@ -54,19 +55,59 @@ class AssetController extends Controller
     }
     
 
+    public function showPinjamForm($id)
+    {
+        $item = Item::findOrFail($id);
+        return view('assets.pinjam', compact('item'));
+    }
+
     public function pinjam(Request $request, $id)
     {
         $item = Item::findOrFail($id);
 
-        // Contoh pengecekan kondisi sebelum pinjam
-        if ($item->qty <= 0) {
-            return back()->with('error', 'Asset tidak tersedia untuk dipinjam.');
-        }
+        $request->validate([
+            'jumlah' => 'required|integer|min:1|max:' . $item->qty,
+        ]);
 
-        // Update quantity (kurangi 1)
-        $item->qty -= 1;
+        // Kurangi stok
+        $item->qty -= $request->jumlah;
         $item->save();
 
-        return back()->with('success', 'Asset berhasil dipinjam.');
+        return redirect()->route('assets.index')->with('success', 'Asset berhasil dipinjam.');
     }
+
+    public function requestReturn($id)
+{
+    $borrow = Borrow::findOrFail($id);
+
+    if ($borrow->status != 'pinjam') {
+        return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
+    }
+
+    $borrow->status = 'pending';
+    $borrow->save();
+
+    return back()->with('success', 'Permintaan pengembalian dikirim. Menunggu konfirmasi admin.');
+}
+
+public function confirmReturn($id)
+{
+    $borrow = Borrow::findOrFail($id);
+
+    if ($borrow->status != 'pending') {
+        return back()->with('error', 'Asset ini belum minta dikembalikan.');
+    }
+
+    // Tambahkan qty kembali ke stok
+    $borrow->item->qty += $borrow->jumlah;
+    $borrow->item->save();
+
+    // Update status
+    $borrow->status = 'kembali';
+    $borrow->save();
+
+    return back()->with('success', 'Pengembalian berhasil dikonfirmasi.');
+}
+
+
 }

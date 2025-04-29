@@ -122,7 +122,8 @@
                             <h5 class="card-title">{{ $item->item_name }}</h5>
                             <p class="card-text"><strong>Kondisi:</strong> {{ $item->conditions }}</p>
                             <p class="card-text"><strong>Lokasi:</strong> {{ $item->locations }}</p>
-                            <a href="#" class="btn btn-primary btn-sm">Pinjam</a>
+                            <a href="{{ route('assets.pinjam.form', $item->id) }}"
+                                class="btn btn-primary btn-sm">Pinjam</a>
                         </div>
                     </div>
                 </div>

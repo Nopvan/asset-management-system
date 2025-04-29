@@ -24,7 +24,12 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+Route::get('/assets/{id}/pinjam', [AssetController::class, 'showPinjamForm'])->name('assets.pinjam.form');
 Route::post('/assets/{id}/pinjam', [AssetController::class, 'pinjam'])->name('assets.pinjam');
+
+Route::post('/assets/borrow/{id}/return', [AssetController::class, 'requestReturn'])->name('assets.borrow.return');
+Route::post('/assets/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('assets.borrow.confirm');
+
 
 //Routes Item
 Route::get('/item', [ItemController::class, 'index']);
