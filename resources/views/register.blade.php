@@ -55,60 +55,128 @@
         <section class="hero">
             <div class="container py-5"> <!-- Added py-5 for vertical padding -->
                 <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6"> <!-- Adjusted column width -->
-                        <div class="card shadow-lg"> <!-- Added shadow-lg for better depth -->
+                    <div class="col-md-8 col-lg-6">
+                        <div class="card shadow-lg">
                             <h3 class="text-center mb-4">Buat Akun Baru</h3>
-                            <form>
+                            <form method="POST" action="{{ route('register') }}">
+                                @csrf
+
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="nama"
-                                        placeholder="Masukkan Nama Lengkap" required>
+                                    <label>Nama</label>
+                                    <input type="text" name="nama"
+                                        class="form-control @error('nama') is-invalid @enderror"
+                                        value="{{ old('nama') }}" placeholder="Masukkan nama lengkap" required>
+                                    @error('nama')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username"
-                                        placeholder="Masukkan Username" required>
+                                    <label>Username</label>
+                                    <input type="text" name="username"
+                                        class="form-control @error('username') is-invalid @enderror"
+                                        value="{{ old('username') }}" placeholder="Contoh: johndoe123" required>
+                                    @error('username')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="kelas" class="form-label">Kelas</label>
-                                    <input type="text" class="form-control" id="kelas"
-                                        placeholder="Contoh: XII RPL 1" required>
+                                    <label>Kelas</label>
+                                    <input type="text" name="kelas"
+                                        class="form-control @error('kelas') is-invalid @enderror"
+                                        value="{{ old('kelas') }}" placeholder="Contoh: XII RPL 1">
+                                    @error('kelas')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="telepon" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="telepon"
-                                        placeholder="Masukkan No Telepon" required>
+                                    <label>Nomor Telpon</label>
+                                    <input type="number" name="nomor_telpon"
+                                        class="form-control @error('nomor_telpon') is-invalid @enderror"
+                                        value="{{ old('nomor_telpon') }}" placeholder="Contoh: 081234567890">
+                                    @error('nomor_telpon')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email"
-                                        placeholder="Masukkan Email" required>
+                                    <label>Email</label>
+                                    <input type="email" name="email"
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        value="{{ old('email') }}" placeholder="Contoh: email@example.com" required>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password"
-                                        placeholder="Masukkan Password" required>
+                                    <label>Password</label>
+                                    <input type="password" name="password"
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        placeholder="Masukkan password" required>
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="d-grid gap-2"> <!-- Added gap between buttons -->
-                                    <button type="submit" class="btn btn-primary py-2">Daftar</button>
-                                    <!-- Added py-2 -->
+
+                                <div class="mb-3">
+                                    <label>Konfirmasi Password</label>
+                                    <input type="password" name="password_confirmation" class="form-control"
+                                        placeholder="Ulangi password" required>
                                 </div>
+
+                                <button type="submit" class="btn btn-primary">Register</button>
                             </form>
-                            <div class="mt-4 text-center"> <!-- Increased margin top -->
+
+                            <div class="mt-4 text-center">
                                 <small>Sudah punya akun? <a href="/login" class="text-primary">Login di
                                         sini</a></small>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </div>
+
+    @if ($errors->any())
+        <!-- Modal -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">Terjadi Kesalahan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Footer -->
     @include('layouts.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            @endif
+        });
+    </script>
+
 </body>
 
 </html>

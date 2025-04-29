@@ -7,8 +7,15 @@ use App\Models\Category;
 use App\Models\Borrow;
 use Illuminate\Http\Request;
 
+use Illuminate\Routing\Controller;
+
 class AssetController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('auth')->except(['index']);
+}
+
     public function index(Request $request)
     {
         // Ambil kategori yang memiliki item dengan qty > 0 dan kondisi good
