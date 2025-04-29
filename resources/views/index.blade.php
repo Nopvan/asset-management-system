@@ -51,7 +51,11 @@
         <section class="hero">
             <h1 class="display-4 fw-bold">Selamat Datang</h1>
             <p class="lead">Peminjaman aset SMK NAGRAK PURWAKARTA dengan mudah dan cepat</p>
-            <a href="/login" class="btn btn-outline-light btn-sm mt-2">Login untuk Mulai</a>
+            @guest
+                <a href="/login" class="btn btn-outline-light btn-sm mt-2">Login untuk Mulai</a>
+            @else
+                <a href="/assets" class="btn btn-outline-light btn-sm mt-2">Lihat Aset</a>
+            @endguest
         </section>
     </div>
 
