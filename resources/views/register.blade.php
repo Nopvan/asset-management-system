@@ -112,7 +112,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label>Password</label>
+                                    <label>Password (Minimal 6 Karakter)</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror"
                                         placeholder="Masukkan password" required>
