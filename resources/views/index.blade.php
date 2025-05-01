@@ -38,6 +38,21 @@
             color: white;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
+
+        .btn-login {
+            background-color: #f8f9fa;
+            color: #000000;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+            letter-spacing: 1px;
+        }
+
+        .btn-login:hover {
+            background-color: #28a745;
+            color: #ffffff;
+            transform: scale(1.0);
+        }
     </style>
 </head>
 
@@ -49,10 +64,12 @@
     <div class="content-wrapper">
         <!-- Hero Section -->
         <section class="hero">
-            <h1 class="display-4 fw-bold">Selamat Datang</h1>
-            <p class="lead">Peminjaman aset SMK NAGRAK PURWAKARTA dengan mudah dan cepat</p>
+            <h1 class="display-4 fw-bold">SELAMAT DATANG</h1>
+            <h2>Di Sistem Manajemen Aset SMK Nagrak Purwakarta</h2>
+            <p class="lead">Sistem ini menyediakan kemudahan dalam pengelolaan aset untuk mendukung kegiatan
+                operasional sekolah secara efisien dan transparan.</p>
             @guest
-                <a href="/login" class="btn btn-outline-light btn-sm mt-2">Login untuk Mulai</a>
+                <a href="/login" class="btn btn-login btn-sm mt-2">LOGIN</a>
             @else
                 <a href="/assets" class="btn btn-outline-light btn-sm mt-2">Lihat Aset</a>
             @endguest

@@ -1,3 +1,12 @@
+<style>
+    .nav-link:hover {
+        text-decoration: none;
+        color: #2e9323 !important;
+        transform: scale(1.10);
+    }
+</style>
+
+
 <nav class="navbar navbar-expand-lg bg-light bg-gradient shadow">
     <div class="container">
         <a class="navbar-brand text-white d-flex align-items-center" href="/">
