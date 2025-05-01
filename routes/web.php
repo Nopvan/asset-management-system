@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Khusus super_admin & resepsionis
-    Route::middleware(['auth', 'check.role:super_admin,resepsionis'])->group(function () {
+    Route::middleware(['auth', 'role:super_admin,resepsionis'])->group(function () {
         Route::get('/dashboard', function () {
             return view('pages.dashboard');
         });
