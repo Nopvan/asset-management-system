@@ -11,14 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
 
-    $app->singleton(
-        Illuminate\Contracts\Http\Kernel::class,
-        App\Http\Kernel::class
-    );
     

@@ -6,10 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Borrow extends Model
 {
-    protected $fillable = ['item_id', 'jumlah', 'status'];
+    protected $fillable = [
+        'user_id',
+        'item_id',
+        'jumlah',
+        'status',
+    ];
 
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

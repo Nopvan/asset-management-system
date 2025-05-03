@@ -10,8 +10,10 @@ class CreateBorrowsTable extends Migration
     {
         Schema::create('borrows', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->integer('jumlah');
+            $table->string('status')->default('pinjam'); // default status pinjam
             $table->timestamps();
         });
     }

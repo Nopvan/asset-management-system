@@ -8,6 +8,7 @@ use App\Models\Borrow;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -75,11 +76,19 @@ class AssetController extends Controller
         $request->validate([
             'jumlah' => 'required|integer|min:1|max:' . $item->qty,
         ]);
-
+    
         // Kurangi stok
         $item->qty -= $request->jumlah;
         $item->save();
-
+    
+        // Simpan ke riwayat peminjaman
+        Borrow::create([
+            'user_id'   => Auth::id(),
+            'item_id'   => $item->id,
+            'jumlah'    => $request->jumlah,
+            'status'    => 'pinjam', // atau 'pending' sesuai kebutuhan
+        ]);
+    
         return redirect()->route('assets.index')->with('success', 'Asset berhasil dipinjam.');
     }
 
@@ -114,6 +123,14 @@ public function confirmReturn($id)
     $borrow->save();
 
     return back()->with('success', 'Pengembalian berhasil dikonfirmasi.');
+}
+
+public function myBorrows()
+{
+    // Gunakan paginate() alih-alih get()
+    $borrows = Borrow::with(['user', 'asset'])->paginate(10); // 10 item per halaman
+
+    return view('assets.borrow_index', compact('borrows'));   
 }
 
 

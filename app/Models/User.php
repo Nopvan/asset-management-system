@@ -16,4 +16,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function borrow()
+    {
+        return $this->hasMany(Borrow::class);
+    }
+
 }

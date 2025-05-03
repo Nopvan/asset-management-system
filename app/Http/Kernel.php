@@ -38,7 +38,8 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         // di Kernel.php
-        'role' => \App\Http\Middleware\CheckRole::class,
+        // 'role' => \App\Http\Middleware\CheckRole::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
