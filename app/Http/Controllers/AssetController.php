@@ -23,9 +23,7 @@ class AssetController extends Controller
         $kategori = Category::whereHas('items', function($query) {
             $query->where('qty', '>', 0)
                   ->whereNotIn('conditions', ['lost', 'broken']);
-        }, '=', 1, 'and', function($query) {
-            $query->whereColumn('categories.id', 'items.cat_id');
-        })->get();
+        })->get();        
     
         // Ambil lokasi yang memiliki item dengan qty > 0 dan kondisi good
         $lokasi = Item::select('locations')
