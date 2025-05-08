@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class category extends Model
 {
-    protected $category = 'categories';
+    protected $table = 'categories';
 
-    protected $guarded = [];
+    protected $fillable = ['cat_name', 'cat_code'];
 
     public function items()
     {

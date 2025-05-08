@@ -2,14 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class UserSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         User::insert([
             [
@@ -20,6 +19,8 @@ class UserSeeder extends Seeder
                 'email' => 'superadmin@example.com',
                 'password' => Hash::make('password'),
                 'role' => 'super_admin',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'nama' => 'Resepsionis',
@@ -29,17 +30,65 @@ class UserSeeder extends Seeder
                 'email' => 'resepsionis@example.com',
                 'password' => Hash::make('password'),
                 'role' => 'resepsionis',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
+
             [
-                'nama' => 'Siswa Biasa',
-                'username' => 'user123',
+                'nama' => 'Mydei',
+                'username' => 'mydei123',
                 'kelas' => 'XI TKJ',
-                'nomor_telpon' => '082112345678',
-                'email' => 'user123@example.com',
+                'nomor_telpon' => '082111111111',
+                'email' => 'mydei123@example.com',
                 'password' => Hash::make('password'),
                 'role' => 'user',
-            ]
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Ruan Mei',
+                'username' => 'ruanmei123',
+                'kelas' => 'XII RPL',
+                'nomor_telpon' => '082122222222',
+                'email' => 'ruanmei123@example.com',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Yanqing',
+                'username' => 'yanqing123',
+                'kelas' => 'X MM',
+                'nomor_telpon' => '082133333333',
+                'email' => 'yangqing123@example.com',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Moze',
+                'username' => 'moze123',
+                'kelas' => 'XI TKJ',
+                'nomor_telpon' => '082144444444',
+                'email' => 'moze123@example.com',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Luocha',
+                'username' => 'luocha123',
+                'kelas' => 'XII MM',
+                'nomor_telpon' => '082155555555',
+                'email' => 'luocha@example.com',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
-
