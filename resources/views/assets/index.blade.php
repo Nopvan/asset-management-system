@@ -118,12 +118,13 @@
                                 <i class="fas fa-image"></i>
                             </div>
                         @endif
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $item->item_name }}</h5>
-                            <p class="card-text"><strong>Kondisi:</strong> {{ $item->conditions }}</p>
-                            <p class="card-text"><strong>Lokasi:</strong> {{ $item->locations }}</p>
-                            <a href="{{ route('assets.pinjam.form', $item->id) }}"
-                                class="btn btn-primary btn-sm">Pinjam</a>
+                        <div class="card-body p-2">
+                            <h5 class="card-title mb-1">{{ $item->item_name }}</h5>
+                            <p class="card-text mb-1"><strong>Kondisi:</strong> {{ $item->conditions }}</p>
+                            <p class="card-text mb-1"><strong>Lokasi:</strong> {{ $item->locations }}</p>
+                            <p class="card-text mb-1"><strong>Stok:</strong> {{ $item->qty }}</p>
+                            <a href="{{ route('assets.form_pinjam.form', $item->id) }}"
+                                class="btn btn-primary btn-sm mt-2">Pinjam</a>
                         </div>
                     </div>
                 </div>

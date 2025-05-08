@@ -66,7 +66,7 @@ class AssetController extends Controller
     public function showPinjamForm($id)
     {
         $item = Item::findOrFail($id);
-        return view('assets.pinjam', compact('item'));
+        return view('assets.form_pinjam', compact('item'));
     }
 
     public function pinjam(Request $request, $id)
@@ -89,22 +89,43 @@ class AssetController extends Controller
             'status'    => 'pinjam', // atau 'pending' sesuai kebutuhan
         ]);
     
-        return redirect()->route('assets.index')->with('success', 'Asset berhasil dipinjam.');
+        return redirect()->route('assets.borrow.index')->with('success', 'Asset berhasil dipinjam.');
     }
 
-    public function requestReturn($id)
+
+    // public function requestReturn($id) 
+    // {
+    // $borrow = Borrow::findOrFail($id);
+
+    // if ($borrow->status != 'pinjam') {
+    //     return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
+    // }
+
+    // $borrow->status = 'pending';
+    // $borrow->save();
+
+    // return back()->with('success', 'Permintaan pengembalian dikirim. Menunggu konfirmasi admin.');
+    // }
+
+    public function requestReturn($id) 
 {
     $borrow = Borrow::findOrFail($id);
 
-    if ($borrow->status != 'pinjam') {
+    if ($borrow->status !== 'pinjam') {
         return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
     }
 
-    $borrow->status = 'pending';
+    // Langsung kembalikan qty ke stok
+    $borrow->item->qty += $borrow->jumlah;
+    $borrow->item->save();
+
+    // Langsung ubah status ke kembali
+    $borrow->status = 'kembali';
     $borrow->save();
 
-    return back()->with('success', 'Permintaan pengembalian dikirim. Menunggu konfirmasi admin.');
+    return back()->with('success', 'Asset berhasil dikembalikan.');
 }
+
 
 public function confirmReturn($id)
 {
@@ -128,7 +149,7 @@ public function confirmReturn($id)
 public function myBorrows()
 {
     // Gunakan paginate() alih-alih get()
-    $borrows = Borrow::with(['user', 'asset'])->paginate(10); // 10 item per halaman
+    $borrows = Borrow::with(['user', 'item'])->paginate(10); // 10 item per halaman
 
     return view('assets.borrow_index', compact('borrows'));   
 }

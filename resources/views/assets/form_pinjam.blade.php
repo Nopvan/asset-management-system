@@ -29,7 +29,7 @@
                     @endif
                 </div>
 
-                <form method="POST" action="{{ route('assets.pinjam', $item->id) }}">
+                <form method="POST" action="{{ route('assets.form_pinjam', $item->id) }}">
                     @csrf
 
                     <div class="mb-3">
@@ -56,15 +56,34 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-success">Pinjam Sekarang</button>
+                    <button type="submit" class="btn btn-success" onclick="disableSubmit(this)">Pinjam
+                        Sekarang</button>
                     <a href="{{ route('assets.index') }}" class="btn btn-secondary">Batal</a>
                 </form>
+                <script>
+                    document.querySelector('form').addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                        }
+                    });
+
+                    function disableSubmit(btn) {
+                        btn.disabled = true;
+                        btn.innerHTML =
+                            `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Saving...`;
+                        // Kirim form secara eksplisit
+                        setTimeout(() => {
+                            btn.closest('form').submit();
+                        }, 100); // Tunggu sebentar sebelum form disubmit
+                    }
+                </script>
             </div>
         </div>
 
     </div>
 
     @include('layouts.footer')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

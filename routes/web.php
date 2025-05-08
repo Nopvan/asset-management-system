@@ -6,29 +6,31 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AssetController;
 
-Route::get('/', function () {
-    return view('index');
-});
+    Route::get('/', function () {
+        return view('index');
+    });
 
-// Auth
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Auth
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
+        Route::post('/register', [AuthController::class, 'register']);
+    });
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+    Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
 
-
-// Untuk semua user yang login
-Route::middleware('auth')->group(function () {
-
-    Route::get('/assets/{id}/pinjam', [AssetController::class, 'showPinjamForm'])->name('assets.pinjam.form');
-    Route::post('/assets/{id}/pinjam', [AssetController::class, 'pinjam'])->name('assets.pinjam');
-    Route::post('/assets/borrow/{id}/return', [AssetController::class, 'requestReturn'])->name('assets.borrow.return');
-    Route::post('/assets/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('assets.borrow.confirm');
-    Route::get('/assets/borrow', [AssetController::class, 'myBorrows'])->middleware('auth')->name('assets.borrow.index');
     
+    // Khusus user
+    Route::middleware(['auth', 'role:user'])->group(function () {
+        Route::get('/assets/{id}/pinjam', [AssetController::class, 'showPinjamForm'])->name('assets.form_pinjam.form');
+        Route::post('/assets/{id}/pinjam', [AssetController::class, 'pinjam'])->name('assets.form_pinjam');
+        Route::post('/assets/borrow/{id}/return', [AssetController::class, 'requestReturn'])->name('assets.borrow.return');
+        Route::post('/assets/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('assets.borrow.confirm');
+        Route::get('/assets/borrow', [AssetController::class, 'myBorrows'])->middleware('auth')->name('assets.borrow.index');
+    });
+
     // Khusus super_admin & resepsionis
     Route::middleware(['auth', 'role:super_admin,resepsionis'])->group(function () {
         Route::get('/dashboard', function () {
@@ -54,9 +56,3 @@ Route::middleware('auth')->group(function () {
         Route::get('/category/export-pdf', [CategoryController::class, 'exportPdf'])->name('categories.export.pdf');
         Route::get('/item/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export.pdf');
     });
-
-});
-
-Route::get('/coba', function () {
-    return 'OK';
-})->middleware(['auth', 'role:super_admin']);

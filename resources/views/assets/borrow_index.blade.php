@@ -63,8 +63,9 @@
                     @endforelse
                 </tbody>
             </table>
-
-            {{ $borrows->links() }}
+            <div class="d-flex justify-content-center">
+                {{ $borrows->links() }}
+            </div>
         </div>
 
         @include('layouts.footer')

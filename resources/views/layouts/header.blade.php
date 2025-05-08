@@ -30,7 +30,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
 
-                        @if (Auth::user()->role === 'superadmin' || Auth::user()->role === 'resepsionis')
+                        @if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'resepsionis')
                             <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
                         @elseif (Auth::user()->role === 'user')
                             <li><a class="dropdown-item" href="{{ route('assets.borrow.index') }}">List Peminjaman</a></li>

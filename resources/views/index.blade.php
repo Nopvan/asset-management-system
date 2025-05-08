@@ -39,7 +39,8 @@
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
 
-        .btn-login {
+        .btn-login,
+        .btn-aset {
             background-color: #f8f9fa;
             color: #000000;
             font-weight: bold;
@@ -48,7 +49,8 @@
             letter-spacing: 1px;
         }
 
-        .btn-login:hover {
+        .btn-login:hover,
+        .btn-aset:hover {
             background-color: #28a745;
             color: #ffffff;
             transform: scale(1.0);
@@ -71,7 +73,7 @@
             @guest
                 <a href="/login" class="btn btn-login btn-sm mt-2">LOGIN</a>
             @else
-                <a href="/assets" class="btn btn-outline-light btn-sm mt-2">Lihat Aset</a>
+                <a href="/assets" class="btn btn-aset btn-sm mt-2">ASSETS</a>
             @endguest
         </section>
     </div>
