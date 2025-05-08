@@ -148,11 +148,15 @@ public function confirmReturn($id)
 
 public function myBorrows()
 {
-    // Gunakan paginate() alih-alih get()
-    $borrows = Borrow::with(['user', 'item'])->paginate(10); // 10 item per halaman
+    $borrows = Borrow::with(['user', 'item'])
+        ->where('user_id', Auth::id())
+        ->orderByRaw("FIELD(status, 'pinjam', 'pending', 'kembali')")
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
-    return view('assets.borrow_index', compact('borrows'));   
+    return view('assets.borrow_index', compact('borrows'));
 }
+
 
 
 }
