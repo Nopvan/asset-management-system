@@ -46,7 +46,7 @@
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-danger mx-1"
-                                                    data-bs-target="#confDelete-{{ $user->id }}">
+                                                    data-bs-toggle="modal" data-bs-target="#confDelete-{{ $user->id }}">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>

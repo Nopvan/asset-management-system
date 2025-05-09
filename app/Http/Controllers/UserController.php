@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -83,4 +84,52 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('pages.users.show', compact('user'));
     }
+
+    public function showProfile()
+    {
+        $user = Auth::user(); // ambil user yang sedang login
+    
+        return view('user.profile', compact('user'));
+    }
+
+    public function editProfile()
+    {
+        $user = Auth::user();
+    return view('user.edit', compact('user'));
+}
+
+public function updateProfile(Request $request)
+{
+    $user = User::findOrFail(Auth::id());
+
+    $rules = [
+        'name' => 'required|string|max:255',
+        'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'kelas' => 'nullable|string|max:255',
+        'nomor_telpon' => 'nullable|string|max:20',
+    ];
+
+    if ($request->filled('password')) {
+        $rules['password'] = 'required|string|min:6|confirmed';
+    }
+
+    $validated = $request->validate($rules);
+
+    // Ganti field sesuai struktur tabel
+    $user->nama = $validated['name'];
+    $user->username = $validated['username'];
+    $user->email = $validated['email'];
+    $user->kelas = $validated['kelas'] ?? null;
+    $user->nomor_telpon = $validated['telepon'] ?? null;
+
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+
+    $user->save();
+
+    return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
+}
+
 }

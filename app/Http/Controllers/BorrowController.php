@@ -12,7 +12,7 @@ class BorrowController extends Controller
     {
         $borrows = Borrow::with('item', 'user')
             ->orderByRaw("FIELD(status, 'pending', 'hilang', 'pinjam', 'kembali')")
-            ->latest()
+            ->orderByDesc('tanggal_pinjam')
             ->paginate(10);
 
         return view('pages.loans.index', compact('borrows'));

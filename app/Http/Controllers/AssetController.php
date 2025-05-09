@@ -145,7 +145,7 @@ public function myBorrows()
     $borrows = Borrow::with(['user', 'item'])
         ->where('user_id', Auth::id())
         ->orderByRaw("FIELD(status, 'pinjam', 'pending', 'kembali')")
-        ->orderBy('created_at', 'desc')
+        ->orderByDesc('tanggal_pinjam')
         ->paginate(10);
 
     return view('assets.borrow_index', compact('borrows'));

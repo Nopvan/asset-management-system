@@ -2,13 +2,15 @@
 <div class="modal fade" id="confDelete-{{ $user->id }}" tabindex="-1" aria-labelledby="confDeleteLabel"
     aria-hidden="true">
     <div class="modal-dialog">
-        <form action="/user/{{ $user->id }}" method="POST">
+        <form action="{{ route('user.destroy', $user->id) }}" method="POST">
             @csrf
             @method('DELETE')
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title fs-5" id="confDeleteLabel">Delete Confirmation</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <span>Are you sure you want to delete user <strong>{{ $user->nama }}</strong>?</span>

@@ -57,29 +57,26 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 @if ($borrow->status == 'pending')
-                                                    <form action="{{ route('borrow.confirm', $borrow->id) }}" method="POST"
-                                                        class="mx-1">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm btn-success"
-                                                            onclick="return confirm('Yakin ingin menyetujui pengembalian barang?')">
-                                                            <i class="fas fa-check"></i> Acc
-                                                        </button>
-                                                    </form>
-                                                    <form action="{{ route('borrow.reject', $borrow->id) }}" method="POST"
-                                                        class="mx-1">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('Yakin ingin menolak pengembalian? (Barang hilang / rusak)')">
-                                                            <i class="fas fa-times"></i> Decline
-                                                        </button>
-                                                    </form>
+                                                    <!-- Tombol ACC -->
+                                                    <button type="button" class="btn btn-sm btn-success mx-1"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confAcc-{{ $borrow->id }}">
+                                                        <i class="fas fa-check"></i> Acc
+                                                    </button>
+
+                                                    <!-- Tombol Decline -->
+                                                    <button type="button" class="btn btn-sm btn-danger mx-1"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confDec-{{ $borrow->id }}">
+                                                        <i class="fas fa-times"></i> Decline
+                                                    </button>
                                                 @else
                                                     -
                                                 @endif
                                             </div>
                                         </td>
+                                        @include('pages.loans.conf-acc')
+                                        @include('pages.loans.conf-dec')
                                     </tr>
                                 @empty
                                     <tr>

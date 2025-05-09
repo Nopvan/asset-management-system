@@ -123,8 +123,13 @@
                             <p class="card-text mb-1"><strong>Kondisi:</strong> {{ $item->conditions }}</p>
                             <p class="card-text mb-1"><strong>Lokasi:</strong> {{ $item->locations }}</p>
                             <p class="card-text mb-1"><strong>Stok:</strong> {{ $item->qty }}</p>
-                            <a href="{{ route('assets.form_pinjam.form', $item->id) }}"
-                                class="btn btn-primary btn-sm mt-2">Pinjam</a>
+                            @if (Auth::check() && Auth::user()->role === 'user')
+                                <a href="{{ route('assets.form_pinjam.form', $item->id) }}"
+                                    class="btn btn-primary btn-sm mt-2">Pinjam</a>
+                            @else
+                                <button class="btn btn-secondary btn-sm mt-2" disabled>Pinjam</button>
+                            @endif
+
                         </div>
                     </div>
                 </div>

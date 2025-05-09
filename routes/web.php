@@ -12,6 +12,10 @@ use App\Http\Controllers\UserController;
         return view('index');
     });
 
+    Route::get('/customerservice', function () {
+        return view('customer_service');
+    });
+
     // Auth
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
@@ -19,10 +23,15 @@ use App\Http\Controllers\UserController;
         Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
         Route::post('/register', [AuthController::class, 'register']);
     });
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
 
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
+        Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+        Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+    });
     
     // Khusus user
     Route::middleware(['auth', 'role:user'])->group(function () {
@@ -73,5 +82,4 @@ use App\Http\Controllers\UserController;
         Route::get('/borrow/export-pdf', [BorrowController::class, 'exportPdf'])->name('borrow.export.pdf');
         Route::patch('/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('borrow.confirm');
         Route::patch('/borrow/{id}/reject', [AssetController::class, 'rejectReturn'])->name('borrow.reject');
-
     });

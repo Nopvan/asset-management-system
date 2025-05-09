@@ -28,7 +28,7 @@
                         <i class="fas fa-user me-2"></i>Halo, {{ Auth::user()->nama }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="/profile">Profile</a></li>
 
                         @if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'resepsionis')
                             <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
@@ -36,7 +36,7 @@
                             <li><a class="dropdown-item" href="{{ route('assets.borrow.index') }}">List Peminjaman</a></li>
                         @endif
 
-                        <li><a class="dropdown-item" href="#">Customer Service</a></li>
+                        <li><a class="dropdown-item" href="/customerservice">Customer Service</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
