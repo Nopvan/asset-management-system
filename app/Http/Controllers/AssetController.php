@@ -84,44 +84,25 @@ class AssetController extends Controller
             'user_id'   => Auth::id(),
             'item_id'   => $item->id,
             'jumlah'    => $request->jumlah,
-            'status'    => 'pinjam', // atau 'pending' sesuai kebutuhan
+            'status'    => 'pinjam',
+            'tanggal_pinjam' => now(),
         ]);
     
         return redirect()->route('assets.borrow.index')->with('success', 'Asset berhasil dipinjam.');
     }
 
-
-    // public function requestReturn($id) 
-    // {
-    // $borrow = Borrow::findOrFail($id);
-
-    // if ($borrow->status != 'pinjam') {
-    //     return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
-    // }
-
-    // $borrow->status = 'pending';
-    // $borrow->save();
-
-    // return back()->with('success', 'Permintaan pengembalian dikirim. Menunggu konfirmasi admin.');
-    // }
-
     public function requestReturn($id) 
-{
-    $borrow = Borrow::findOrFail($id);
+    {
+        $borrow = Borrow::findOrFail($id);
 
-    if ($borrow->status !== 'pinjam') {
-        return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
-    }
-
-    // Langsung kembalikan qty ke stok
-    $borrow->item->qty += $borrow->jumlah;
-    $borrow->item->save();
-
-    // Langsung ubah status ke kembali
-    $borrow->status = 'kembali';
-    $borrow->save();
-
-    return back()->with('success', 'Asset berhasil dikembalikan.');
+        if ($borrow->status != 'pinjam') {
+            return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
+        }
+    
+        $borrow->status = 'pending';
+        $borrow->save();
+    
+        return back()->with('success', 'Permintaan pengembalian dikirim. Menunggu konfirmasi admin.');
 }
 
 
@@ -142,6 +123,21 @@ public function confirmReturn($id)
     $borrow->save();
 
     return back()->with('success', 'Pengembalian berhasil dikonfirmasi.');
+}
+
+public function rejectReturn($id)
+{
+    $borrow = Borrow::findOrFail($id);
+
+    if ($borrow->status != 'pending') {
+        return back()->with('error', 'Asset ini belum minta dikembalikan.');
+    }
+
+    // Batalkan permintaan pengembalian
+    $borrow->status = 'hilang';
+    $borrow->save();
+
+    return back()->with('success', 'Permintaan pengembalian dibatalkan.');
 }
 
 public function myBorrows()
