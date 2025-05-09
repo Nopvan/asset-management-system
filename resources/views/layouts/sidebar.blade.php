@@ -1,3 +1,6 @@
+<!-- Font Awesome versi 6 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 <style>
     .sidebar-custom .nav-link,
     .sidebar-custom .sidebar-heading,
@@ -35,13 +38,33 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">
         <a class="nav-link " href="/item">
-            <i class="fas fa-fw fa-table"></i>
+            <i class="fa-solid fa-list"></i>
             <span>Assets</span></a>
     </li>
     <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
         <a class="nav-link " href="/category">
             <i class="fas fa-fw fa-table"></i>
             <span>Categories</span></a>
+    </li>
+    @if (Auth::user()->role === 'super_admin')
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            User Management
+        </div>
+        <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
+            <a class="nav-link " href="/user">
+                <i class="fa-solid fa-users"></i>
+                <span>Users</span></a>
+        </li>
+    @endif
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Loan Management
+    </div>
+    <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
+        <a class="nav-link " href="/category">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <span>List Loan</span></a>
     </li>
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

@@ -21,7 +21,7 @@
                                 is-invalid
                             @enderror"
                                 value="{{ old('cat_id') }}">
-                                <option value="">-- Select Category --</option>
+                                <option selected disabled>-- Select Category --</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" @selected(old('cat_id', $item->cat_id) == $category->id)>
                                         {{ $category->cat_name }}</option>

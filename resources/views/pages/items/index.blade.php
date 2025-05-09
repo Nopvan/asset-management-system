@@ -49,7 +49,7 @@
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-danger mx-1"
                                                     data-bs-toggle="modal" data-bs-target="#confDelete-{{ $item->id }}">
-                                                    <i class="fas fa-eraser"></i>
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
