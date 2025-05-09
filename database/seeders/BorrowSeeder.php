@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Borrow;
 use App\Models\User;
 use App\Models\Item;
+use Carbon\Carbon;
 
 class BorrowSeeder extends Seeder
 {
@@ -13,16 +14,20 @@ class BorrowSeeder extends Seeder
     {
         $users = User::where('role', 'user')->pluck('id')->toArray();
         $items = Item::pluck('id')->toArray();
-
         $statuses = ['pending', 'kembali', 'pinjam'];
 
-        // Generate 20 peminjaman acak
         for ($i = 0; $i < 20; $i++) {
+            $status = fake()->randomElement($statuses);
+            $tanggalPinjam = Carbon::now()->subDays(rand(1, 30));
+            $tanggalKembali = $status === 'kembali' ? (clone $tanggalPinjam)->addDays(rand(1, 7)) : null;            
+
             Borrow::create([
                 'user_id' => fake()->randomElement($users),
                 'item_id' => fake()->randomElement($items),
                 'jumlah' => fake()->numberBetween(1, 5),
-                'status' => fake()->randomElement($statuses),
+                'status' => $status,
+                'tanggal_pinjam' => $tanggalPinjam,
+                'tanggal_kembali' => $tanggalKembali,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

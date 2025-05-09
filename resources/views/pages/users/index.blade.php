@@ -3,7 +3,7 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">USERS</h1>
+        <h1 class="h3 mb-0 text-gray-800">Users</h1>
         <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Add User
         </a>
@@ -45,16 +45,13 @@
                                                     class="btn btn-sm btn-warning mx-1">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                                    onsubmit="return confirm('Are you sure to delete this user?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger mx-1">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-sm btn-danger mx-1"
+                                                    data-bs-target="#confDelete-{{ $user->id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </div>
                                         </td>
+                                        @include('pages.users.conf-delete')
                                     </tr>
                                 @empty
                                     <tr>

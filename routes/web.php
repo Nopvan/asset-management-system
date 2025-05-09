@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\UserController;
 
     Route::get('/', function () {
@@ -65,4 +66,12 @@ use App\Http\Controllers\UserController;
 
         Route::get('/category/export-pdf', [CategoryController::class, 'exportPdf'])->name('categories.export.pdf');
         Route::get('/item/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export.pdf');
+
+
+        // Routes Borrow
+        Route::get('/borrow', [BorrowController::class, 'index'])->name('borrow.index');
+        Route::get('/borrow/export-pdf', [BorrowController::class, 'exportPdf'])->name('borrow.export.pdf');
+        Route::patch('/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('borrow.confirm');
+        Route::patch('/borrow/{id}/reject', [AssetController::class, 'rejectReturn'])->name('borrow.reject');
+
     });

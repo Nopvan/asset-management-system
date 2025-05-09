@@ -46,6 +46,17 @@
             <i class="fas fa-fw fa-table"></i>
             <span>Categories</span></a>
     </li>
+
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Loan Management
+    </div>
+    <li class="nav-item {{ request()->is('borrow*') ? 'active' : '' }}">
+        <a class="nav-link " href="/borrow">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <span>List Loan</span></a>
+    </li>
+
     @if (Auth::user()->role === 'super_admin')
         <hr class="sidebar-divider">
         <div class="sidebar-heading">
@@ -57,15 +68,7 @@
                 <span>Users</span></a>
         </li>
     @endif
-    <hr class="sidebar-divider">
-    <div class="sidebar-heading">
-        Loan Management
-    </div>
-    <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
-        <a class="nav-link " href="/category">
-            <i class="fa-solid fa-table-cells-large"></i>
-            <span>List Loan</span></a>
-    </li>
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <a href="{{ url('/') }}">

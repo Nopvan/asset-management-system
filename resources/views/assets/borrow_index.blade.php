@@ -19,12 +19,13 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <table class="table table-bordered">
+            <table class="table table-bordered text-center">
                 <thead>
                     <tr>
                         <th>Nama Asset</th>
                         <th>Jumlah Dipinjam</th>
                         <th>Tanggal Pinjam</th>
+                        <th>Tanggal Kembali</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -34,7 +35,14 @@
                         <tr>
                             <td>{{ $borrow->item->item_name ?? '-' }}</td>
                             <td>{{ $borrow->jumlah }}</td>
-                            <td>{{ $borrow->created_at->format('d-m-Y H:i') }}</td>
+                            <td>{{ $borrow->tanggal_pinjam }}</td>
+                            <td>
+                                @if ($borrow->tanggal_kembali == null)
+                                    -
+                                @else
+                                    {{ $borrow->tanggal_kembali }}
+                                @endif
+                            </td>
                             <td>
                                 @if ($borrow->status == 'pinjam')
                                     <span class="badge bg-primary">Pinjam</span>

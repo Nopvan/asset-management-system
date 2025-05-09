@@ -11,6 +11,8 @@ class Borrow extends Model
         'item_id',
         'jumlah',
         'status',
+        'tanggal_pinjam',
+        'tanggal_kembali',    
     ];
 
     public function item()
@@ -18,6 +20,7 @@ class Borrow extends Model
         return $this->belongsTo(Item::class);
     }
 
+    public $timestamps = true;
 
     public function user()
     {
