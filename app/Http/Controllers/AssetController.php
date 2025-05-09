@@ -55,7 +55,7 @@ class AssetController extends Controller
             $query->orderBy('qty', 'desc');
         }
     
-        $items = $query->paginate(10)->withQueryString();
+        $items = $query->paginate(9)->withQueryString();
     
         return view('assets.index', compact('items', 'kategori', 'lokasi'));
     }

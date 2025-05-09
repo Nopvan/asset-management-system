@@ -20,7 +20,7 @@ class BorrowController extends Controller
 
     public function exportPdf()
     {
-        $categories = Borrow::get()->chunk(10);
+        $borrows = Borrow::get()->chunk(10);
 
         $pdf = PDF::loadView('pages.loans.pdf', compact('borrows'));
 
