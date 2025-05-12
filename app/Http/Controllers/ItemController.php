@@ -26,32 +26,35 @@ class ItemController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        // dd($request->all());
+public function store(Request $request)
+{
+    // dd($request->file('photo'));
+    $validatedData = $request->validate([
+        'cat_id' => 'required',
+        'item_name' => 'required',
+        'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
+        'qty' => 'required',
+        'locations' => 'required',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        $validatedData = $request->validate([
-            'cat_id' => 'required',
-            'item_name' => 'required',
-            'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
-            'qty' => 'required',
-            'locations' => 'required',
-        ], [
-            'item_name.required' => 'The Name field is required.',
-            'qty.required' => 'The Quantity field is required.',
-            'locations.required' => 'The Location field is required.',
-        ]);
+    if ($request->hasFile('photo')) {
+        $filename = time() . '_' . $request->file('photo')->getClientOriginalName();
+        $request->file('photo')->move(public_path('storage/uploads/items'), $filename);
+        $path = 'uploads/items/' . $filename;
+    }
 
-        Item::create([
-            'cat_id' => $request->cat_id,
-            'item_name' => $request->item_name,
-            'conditions' => $request->conditions,
-            'qty' => $request->qty,
-            'locations' => $request->locations,
-        ]);
+    Item::create([
+        'cat_id' => $request->cat_id,
+        'item_name' => $request->item_name,
+        'conditions' => $request->conditions,
+        'qty' => $request->qty,
+        'locations' => $request->locations,
+        'photo' => $path ?? null, 
+    ]);
 
-        return redirect('/item')->with('success', 'Item has been added');
-    } 
+    return redirect('/item')->with('success', 'Item has been added');
+}
 
     public function edit($id)
     {
@@ -60,6 +63,12 @@ class ItemController extends Controller
         return view('pages.items.edit', compact('item', 'categories'));
     }
     
+    public function show($id)
+    {
+        $item = Item::findOrFail($id);
+        
+        return view('pages.items.show', compact('item'));
+    }
 
     public function update(Request $request, $id)
     {

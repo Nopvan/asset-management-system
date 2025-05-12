@@ -62,6 +62,7 @@ use App\Http\Controllers\UserController;
         Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
         Route::get('/item/edit/{id}', [ItemController::class, 'edit'])->name('item.edit');
         Route::post('/item', [ItemController::class, 'store'])->name('item.store');
+        Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
         Route::put('/item/{id}', [ItemController::class, 'update'])->name('item.update');
         Route::delete('/item/{id}', [ItemController::class, 'destroy'])->name('item.destroy');
 

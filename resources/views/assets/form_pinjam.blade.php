@@ -19,8 +19,8 @@
 
                 <!-- Foto Asset -->
                 <div class="text-center mb-4">
-                    @if ($item->image)
-                        <img src="{{ asset('images/' . $item->image) }}" alt="Foto Asset" class="img-fluid rounded"
+                    @if ($item->photo)
+                        <img src="{{ asset('storage/' . $item->photo) }}" alt="Foto Asset" class="img-fluid rounded"
                             style="max-height: 250px;">
                     @else
                         <div class="img-placeholder">

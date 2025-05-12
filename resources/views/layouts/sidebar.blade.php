@@ -39,6 +39,16 @@
     <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">
         <a class="nav-link " href="/item">
             <i class="fa-solid fa-list"></i>
+            <span>Locations</span></a>
+    </li>
+    <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">
+        <a class="nav-link " href="/item">
+            <i class="fa-solid fa-list"></i>
+            <span>Rooms</span></a>
+    </li>
+    <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">
+        <a class="nav-link " href="/item">
+            <i class="fa-solid fa-list"></i>
             <span>Assets</span></a>
     </li>
     <li class="nav-item {{ request()->is('category*') ? 'active' : '' }}">
@@ -54,7 +64,7 @@
     <li class="nav-item {{ request()->is('borrow*') ? 'active' : '' }}">
         <a class="nav-link " href="/borrow">
             <i class="fa-solid fa-table-cells-large"></i>
-            <span>List Loan</span></a>
+            <span>List Loans</span></a>
     </li>
 
     @if (Auth::user()->role === 'super_admin')

@@ -5,12 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Item;
 use App\Models\Category;
+use App\Models\Location;
 
 class ItemSeeder extends Seeder
 {
     public function run(): void
     {
         $categoryIds = Category::pluck('id')->toArray();
+        $roomIds = Location::pluck('id')->toArray();
 
         $itemNames = [
             'Proyektor Epson', 'Laptop Lenovo', 'Mouse Logitech', 'Keyboard Mechanical',
@@ -24,12 +26,10 @@ class ItemSeeder extends Seeder
         foreach ($itemNames as $name) {
             Item::create([
                 'cat_id' => fake()->randomElement($categoryIds),
+                'room_id' => fake()->randomElement($roomIds),
                 'item_name' => $name,
                 'conditions' => fake()->randomElement(['good', 'lost', 'broken']),
                 'qty' => fake()->numberBetween(1, 20),
-                'locations' => fake()->randomElement([
-                    'Lab Komputer', 'Gudang', 'Kelas XII RPL', 'Kelas XI TKJ', 'Ruang Multimedia', 'Kantin', 'Perpustakaan'
-                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

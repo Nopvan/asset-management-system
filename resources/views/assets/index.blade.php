@@ -110,8 +110,8 @@
             @forelse ($items as $item)
                 <div class="col-md-4">
                     <div class="card card-asset shadow-sm h-100">
-                        @if ($item->image && file_exists(public_path('storage/' . $item->image)))
-                            <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top"
+                        @if ($item->photo && file_exists(public_path('storage/' . $item->photo)))
+                            <img src="{{ asset('storage/' . $item->photo) }}" class="card-img-top"
                                 alt="{{ $item->item_name }}">
                         @else
                             <div class="img-placeholder">

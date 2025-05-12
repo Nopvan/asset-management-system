@@ -43,6 +43,10 @@
                                         <td>{{ $item->locations }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">
+                                                <a href="{{ route('item.show', $item->id) }}"
+                                                    class="btn btn-sm btn-info mx-1">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 <a href="{{ route('item.edit', $item->id) }}"
                                                     class="btn btn-sm btn-warning mx-1">
                                                     <i class="fas fa-pen"></i>

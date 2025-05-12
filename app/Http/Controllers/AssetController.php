@@ -120,6 +120,7 @@ public function confirmReturn($id)
 
     // Update status
     $borrow->status = 'kembali';
+    $borrow->tanggal_kembali = now();
     $borrow->save();
 
     return back()->with('success', 'Pengembalian berhasil dikonfirmasi.');

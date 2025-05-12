@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cat_id');
+            $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
             $table->string('item_name', 255);
             $table->enum('conditions',['good', 'lost', 'broken']);
             $table->integer('qty');
-            $table->string('locations', 255);
+            $table->string('photo')->nullable();
             $table->timestamps();
 
             $table->foreign('cat_id')->references('id')->on('categories')
