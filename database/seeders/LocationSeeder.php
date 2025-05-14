@@ -19,7 +19,7 @@ class LocationSeeder extends Seeder
             Location::create([
                 'name' => 'Gedung ' . chr(64 + $i), // Gedung A, B, C, dst
                 'address' => $faker->address,
-                'luas' => $faker->numberBetween(100, 1000), // luas m2
+                'area' => $faker->numberBetween(100, 1000), // luas m2
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

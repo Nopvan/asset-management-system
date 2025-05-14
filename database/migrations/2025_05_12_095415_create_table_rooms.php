@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->string('name');
-            $table->double('luas')->nullable(); // ukuran ruangan
+            $table->double('area')->nullable(); 
+            $table->string('photo')->nullable();
+            $table->boolean('status');
             $table->timestamps();
         });
     }

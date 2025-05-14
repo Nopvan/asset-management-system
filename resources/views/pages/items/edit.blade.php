@@ -81,15 +81,17 @@
                             @enderror
                         </div>
                         <div class="form-group mb-3">
-                            <label for="locations">Location</label>
-                            <input type="text" name="locations" id="locations"
-                                class="form-control @error('locations') is-invalid @enderror"
-                                value="{{ old('locations', $item->locations) }}">
-                            @error('locations')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            <label for="rooms">Ruangan</label>
+                            <select name="room_id" id="rooms"
+                                class="form-control @error('room_id') is-invalid @enderror">
+                                value="{{ old('rooms') }}">
+                                <option selected disabled>-- Select Room --</option>
+                                @foreach ($rooms as $room)
+                                    <option value="{{ $room->id }}" @selected(old('rooms', $item->room_id) == $room->id)>
+                                        {{ $room->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="card-footer">

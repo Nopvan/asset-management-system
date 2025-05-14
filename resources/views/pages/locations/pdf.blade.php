@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Items PDF</title>
+    <title>Locations PDF</title>
     <style>
         body {
             font-family: sans-serif;
@@ -83,7 +83,7 @@
 </head>
 
 <body>
-    @foreach ($items as $chunkIndex => $chunk)
+    @foreach ($locations as $chunkIndex => $chunk)
         @if ($chunkIndex > 0)
             <div class="page-break"></div>
         @endif
@@ -109,27 +109,26 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Condition</th>
-                    <th>Quantity</th>
-                    <th>Room</th>
+                    <th>Nama Lokasi</th>
+                    <th>Alamat</th>
+                    <th>Luas Area</th>
+                    <th>Total Ruangan</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($chunk as $item)
+                @foreach ($chunk as $location)
                     <tr>
                         <td>{{ $loop->parent->index * 10 + $loop->index + 1 }}</td>
-                        <td>{{ $item->item_name }}</td>
-                        <td>{{ $item->category->cat_name }}</td>
-                        <td>{{ ucfirst($item->conditions) }}</td>
-                        <td>{{ $item->qty }}</td>
-                        <td>{{ $item->room->name }}</td>
+                        <td>{{ $location->name }}</td>
+                        <td>{{ $location->address }}</td>
+                        <td>{{ $location->area }} m²</td>
+                        <td>{{ $location->rooms_count }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @endforeach
+
 </body>
 
 </html>

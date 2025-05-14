@@ -36,8 +36,8 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">
-        <a class="nav-link " href="/item">
+    <li class="nav-item {{ request()->is('location*') ? 'active' : '' }}">
+        <a class="nav-link " href="/locations">
             <i class="fa-solid fa-list"></i>
             <span>Locations</span></a>
     </li>

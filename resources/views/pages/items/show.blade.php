@@ -46,8 +46,8 @@
                             <td>{{ $item->qty }} unit</td>
                         </tr>
                         <tr>
-                            <th>Lokasi</th>
-                            <td>{{ $item->locations }}</td>
+                            <th>Ruangan</th>
+                            <td>{{ $item->room->name }}</td>
                         </tr>
                         <tr>
                             <th>Diunggah Pada</th>

@@ -9,10 +9,10 @@ class Location extends Model
     //
     protected $table = 'locations';
 
-    protected $fillable = ['name', 'address', 'luas'];
+    protected $fillable = ['name', 'address', 'area', 'photo'];
 
     public function rooms()
     {
-        return $this->hasMany(Item::class, 'location_id');
+        return $this->hasMany(Room::class, 'location_id');
     }
 }

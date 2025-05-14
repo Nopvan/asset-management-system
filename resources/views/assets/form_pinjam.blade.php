@@ -43,8 +43,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Lokasi</label>
-                        <input type="text" class="form-control" value="{{ $item->locations }}" readonly>
+                        <label class="form-label">Ruangan</label>
+                        <input type="text" class="form-control" value="{{ $item->room->name }}" readonly>
                     </div>
 
                     <div class="mb-3">

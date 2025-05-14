@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use App\Models\Item;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -22,22 +24,23 @@ class ItemController extends Controller
     public function create()
     {
         $categories = category::all(); // Ambil semua kategori
-        return view('pages.items.create', compact('categories'));
+        $rooms = Room::all(); // Ambil semua room
+        return view('pages.items.create', compact('categories', 'rooms'));
     }
 
 
 public function store(Request $request)
 {
-    // dd($request->file('photo'));
     $validatedData = $request->validate([
-        'cat_id' => 'required',
-        'item_name' => 'required',
+        'cat_id' => 'required|exists:categories,id',
+        'item_name' => 'required|string|max:255',
         'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
-        'qty' => 'required',
-        'locations' => 'required',
+        'qty' => 'required|integer|min:0',
+        'room_id' => 'required|exists:rooms,id',
         'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
+    $path = null;
     if ($request->hasFile('photo')) {
         $filename = time() . '_' . $request->file('photo')->getClientOriginalName();
         $request->file('photo')->move(public_path('storage/uploads/items'), $filename);
@@ -45,12 +48,12 @@ public function store(Request $request)
     }
 
     Item::create([
-        'cat_id' => $request->cat_id,
-        'item_name' => $request->item_name,
-        'conditions' => $request->conditions,
-        'qty' => $request->qty,
-        'locations' => $request->locations,
-        'photo' => $path ?? null, 
+        'cat_id' => $validatedData['cat_id'],
+        'item_name' => $validatedData['item_name'],
+        'conditions' => $validatedData['conditions'],
+        'qty' => $validatedData['qty'],
+        'room_id' => $validatedData['room_id'],
+        'photo' => $path,
     ]);
 
     return redirect('/item')->with('success', 'Item has been added');
@@ -60,7 +63,8 @@ public function store(Request $request)
     {
         $item = Item::findOrFail($id);
         $categories = Category::all(); // Ambil semua kategori
-        return view('pages.items.edit', compact('item', 'categories'));
+        $rooms = Room::all(); // Ambil semua room
+        return view('pages.items.edit', compact('item', 'categories', 'rooms'));
     }
     
     public function show($id)
@@ -92,18 +96,32 @@ public function store(Request $request)
         return redirect('/item')->with('success', 'Item has been deleted');
     }
 
-    public function exportPdf()
-    {
-        // Ambil semua data item, terus bagi jadi per 10 item
-        $items = Item::with('category')->get()->chunk(10);
-
-        // Kirim ke view PDF yang udah kita siapin
-        $pdf = Pdf::loadView('pages.items.pdf', [
-            'items' => $items
-        ]);
-
-        // Download hasil PDF-nya
-        return $pdf->download('items.pdf');
+ public function exportPdf()
+{
+    if (!in_array(Auth::user()->role, ['super_admin', 'resepsionis'])) {
+        abort(403, 'Unauthorized');
     }
+    // Ambil semua data item, termasuk kategori dan room, bagi per 10 item
+    $items = Item::with(['category', 'room'])->get()->chunk(10);
+
+    // Kirim ke view PDF yang sudah disiapkan
+    $pdf = Pdf::loadView('pages.items.pdf', [
+        'items' => $items
+    ]);
+
+    // Download hasil PDF-nya
+    return $pdf->download('items.pdf');
+}
+
+//Untuk menampilkan item via room
+public function byRoom($roomId)
+{
+    $room = Room::with(['items.category', 'location'])->findOrFail($roomId);
+    $items = $room->items()->paginate(10);
+    $location = $room->location;
+
+    return view('pages.items.by-room', compact('room', 'items', 'location'));
+}
+
 
 }

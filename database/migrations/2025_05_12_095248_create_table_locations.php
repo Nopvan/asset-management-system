@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address')->nullable();
-            $table->double('luas')->nullable(); // misal m2
+            $table->double('area')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

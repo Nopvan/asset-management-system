@@ -27,7 +27,8 @@ class RoomSeeder extends Seeder
             Room::create([
                 'location_id' => $faker->randomElement($locationIds),
                 'name' => $name,
-                'luas' => $faker->numberBetween(20, 150),
+                'area' => $faker->numberBetween(20, 150),
+                'status' => $faker->numberBetween(0, 1), // 0 = tidak aktif, 1 = aktif
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

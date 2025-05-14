@@ -10,8 +10,14 @@ class Room extends Model
 
     protected $fillable = ['name','location_id', 'luas'];
 
-    public function locations()
+    public function location()
     {
         return $this->belongsTo(Location::class, 'location_id');
     }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'room_id');
+    }
+
 }

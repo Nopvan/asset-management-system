@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Category;
 use App\Models\Borrow;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller;
@@ -17,48 +18,58 @@ class AssetController extends Controller
 //     $this->middleware('auth')->except(['index']);
 // }
 
-    public function index(Request $request)
-    {
-        // Ambil kategori yang memiliki item dengan qty > 0 dan kondisi good
-        $kategori = Category::whereHas('items', function($query) {
-            $query->where('qty', '>', 0)
-                  ->whereNotIn('conditions', ['lost', 'broken']);
-        })->get();        
-    
-        // Ambil lokasi yang memiliki item dengan qty > 0 dan kondisi good
-        $lokasi = Item::select('locations')
-                    ->where('qty', '>', 0)
-                    ->whereNotIn('conditions', ['lost', 'broken'])
-                    ->whereNotNull('locations')
-                    ->distinct()
-                    ->pluck('locations');
-    
-        $query = Item::with('category')
-                  ->where('qty', '>', 0)
-                  ->whereNotIn('conditions', ['lost', 'broken']);
-    
-        // Filter pencarian
-        if ($request->filled('nama')) {
-            $query->where('item_name', 'like', '%' . $request->nama . '%');
-        }
-    
-        if ($request->filled('kategori_id')) {
-            $query->where('cat_id', $request->kategori_id); 
-        }
-    
-        if ($request->filled('lokasi')) {
-            $query->where('locations', 'like', '%' . $request->lokasi . '%');
-        }
-    
-        // Khusus pertama kali (tanpa filter), order qty terbanyak
-        if (!$request->filled('nama') && !$request->filled('kategori_id') && !$request->filled('lokasi')) {
-            $query->orderBy('qty', 'desc');
-        }
-    
-        $items = $query->paginate(9)->withQueryString();
-    
-        return view('assets.index', compact('items', 'kategori', 'lokasi'));
+ public function index(Request $request)
+{
+    // Ambil kategori yang memiliki item dengan qty > 0 dan kondisi good
+    $kategori = Category::whereHas('items', function ($query) {
+        $query->where('qty', '>', 0)
+              ->where('conditions', 'good');
+    })->get();
+
+    // Ambil rooms yang memiliki item dengan qty > 0 dan kondisi good
+    $rooms = Room::whereHas('items', function ($query) {
+        $query->where('qty', '>', 0)
+              ->where('conditions', 'good');
+    })->get();
+
+    // Query utama untuk ambil item
+    $query = Item::with(['category', 'room'])
+                ->where('qty', '>', 0)
+                ->where('conditions', 'good');
+
+    // Filter nama item
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('item_name', 'like', "%$search%")
+              ->orWhereHas('category', function ($qc) use ($search) {
+                  $qc->where('cat_name', 'like', "%$search%");
+              })
+              ->orWhereHas('room', function ($qr) use ($search) {
+                  $qr->where('name', 'like', "%$search%");
+              });
+        });
     }
+
+    // Filter kategori
+    if ($request->filled('kategori_id')) {
+        $query->where('cat_id', $request->kategori_id);
+    }
+
+    // Filter room
+    if ($request->filled('room_id')) {
+        $query->where('room_id', $request->room_id);
+    }
+
+    // Jika tanpa filter, order berdasarkan qty terbanyak
+    if (!$request->filled('search') && !$request->filled('kategori_id') && !$request->filled('room_id')) {
+        $query->orderBy('qty', 'desc');
+    }
+
+    $items = $query->paginate(9)->withQueryString();
+
+    return view('assets.index', compact('items', 'kategori', 'rooms'));
+}
     
 
     public function showPinjamForm($id)

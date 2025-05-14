@@ -75,14 +75,20 @@
     <div class="content-wrapper container">
 
         <!-- Search Bar -->
+        <!-- Search Bar -->
         <div class="search-bar shadow-sm">
-            <form class="row g-3" method="GET" action="{{ route('assets.index') }}">
+            <form class="row g-3 align-items-end" method="GET" action="{{ route('assets.index') }}">
+                {{-- Kolom Nama Aset --}}
                 <div class="col-md-4">
-                    <input type="text" name="nama" class="form-control" placeholder="Cari Nama Asset"
-                        value="{{ request('nama') }}">
+                    <label for="search" class="form-label">Cari Aset</label>
+                    <input type="text" name="search" id="search" class="form-control"
+                        placeholder="Cari Nama, Kategori, atau Ruangan" value="{{ request('search') }}">
                 </div>
+
+                {{-- Kolom Kategori --}}
                 <div class="col-md-4">
-                    <select class="form-select" name="kategori_id">
+                    <label for="kategori_id" class="form-label">Kategori</label>
+                    <select class="form-select" name="kategori_id" id="kategori_id">
                         <option selected disabled>Pilih Kategori</option>
                         @foreach ($kategori as $k)
                             <option value="{{ $k->id }}"
@@ -92,18 +98,34 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- Kolom Ruangan --}}
                 <div class="col-md-4">
-                    <select class="form-select" name="lokasi">
-                        <option selected disabled>Pilih Lokasi</option>
-                        @foreach ($lokasi as $l)
-                            <option value="{{ $l }}" {{ request('lokasi') == $l ? 'selected' : '' }}>
-                                {{ $l }}
+                    <label for="room_id" class="form-label">Ruangan</label>
+                    <select class="form-select" name="room_id" id="room_id">
+                        <option selected disabled>Pilih Ruangan</option>
+                        @foreach ($rooms as $room)
+                            <option value="{{ $room->id }}" {{ request('room_id') == $room->id ? 'selected' : '' }}>
+                                {{ $room->name }}
                             </option>
                         @endforeach
                     </select>
                 </div>
+
+                {{-- Tombol di kanan atas --}}
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search"></i> Cari
+                    </button>
+                    <a href="{{ route('assets.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Reset
+                    </a>
+                </div>
             </form>
         </div>
+
+
+
 
         <!-- List Asset -->
         <div class="row g-4">
@@ -121,7 +143,7 @@
                         <div class="card-body p-2">
                             <h5 class="card-title mb-1">{{ $item->item_name }}</h5>
                             <p class="card-text mb-1"><strong>Kondisi:</strong> {{ $item->conditions }}</p>
-                            <p class="card-text mb-1"><strong>Lokasi:</strong> {{ $item->locations }}</p>
+                            <p class="card-text mb-1"><strong>Ruangan:</strong> {{ $item->room->name ?? '-' }}</p>
                             <p class="card-text mb-1"><strong>Stok:</strong> {{ $item->qty }}</p>
                             @if (Auth::check() && Auth::user()->role === 'user')
                                 <a href="{{ route('assets.form_pinjam.form', $item->id) }}"

@@ -2,17 +2,19 @@
 
 @section('content')
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Assets</h1>
-        <div class="d-flex" style="gap: 0.5rem;">
-            <a href="/item/create" class="btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-plus fa-sm text-white-50"></i> Add Item
-            </a>
-            <a href="{{ route('items.export.pdf') }}" class="btn btn-sm btn-success shadow-sm">
-                <i class="fas fa-file-import fa-sm text-white-50"></i> Import
-            </a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url('/locations') }}">Lokasi</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('locations.show', $location->id) }}">{{ $location->name }}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('rooms.byLocation', $location->id) }}">{{ $room->name }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Item</li>
+        </ol>
+    </nav>
+
+    <h3 class="mb-4">Item di Ruangan: {{ $room->name }}</h3>
 
     {{-- Table --}}
     <div class="row">
@@ -52,7 +54,8 @@
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-danger mx-1"
-                                                    data-bs-toggle="modal" data-bs-target="#confDelete-{{ $item->id }}">
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#confDelete-{{ $item->id }}">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>

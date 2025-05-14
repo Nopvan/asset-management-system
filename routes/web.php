@@ -7,6 +7,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\RoomController;
 
     Route::get('/', function () {
         return view('index');
@@ -31,6 +33,9 @@ use App\Http\Controllers\UserController;
         Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
         Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
         Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+
+        Route::get('/item/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export.pdf');
+        Route::get('/locations/create', [LocationController::class, 'create'])->name('locations.create');
     });
     
     // Khusus user
@@ -74,8 +79,17 @@ use App\Http\Controllers\UserController;
         Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
+        Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
+        Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locations.show');
+        Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
+        Route::get('/locations/edit/{id}', [LocationController::class, 'edit'])->name('locations.edit');
+        Route::get('/locations/export/pdf', [LocationController::class, 'exportPdf'])->name('locations.export.pdf');
+
+        Route::get('/locations/{id}/rooms', [RoomController::class, 'byLocation'])->name('rooms.byLocation');
+        Route::get('/rooms/{id}/items', [ItemController::class, 'byRoom'])->name('items.byRoom');
+
+
         Route::get('/category/export-pdf', [CategoryController::class, 'exportPdf'])->name('categories.export.pdf');
-        Route::get('/item/export-pdf', [ItemController::class, 'exportPdf'])->name('items.export.pdf');
 
 
         // Routes Borrow
