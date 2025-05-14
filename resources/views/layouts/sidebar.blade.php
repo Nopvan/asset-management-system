@@ -38,12 +38,12 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ request()->is('location*') ? 'active' : '' }}">
         <a class="nav-link " href="/locations">
-            <i class="fa-solid fa-list"></i>
+            <i class="fa-solid fa-location-dot"></i>
             <span>Locations</span></a>
     </li>
-    <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">
-        <a class="nav-link " href="/item">
-            <i class="fa-solid fa-list"></i>
+    <li class="nav-item {{ request()->is('room*') ? 'active' : '' }}">
+        <a class="nav-link " href="/rooms">
+            <i class="fa-solid fa-house"></i>
             <span>Rooms</span></a>
     </li>
     <li class="nav-item {{ request()->is('item*') ? 'active' : '' }}">

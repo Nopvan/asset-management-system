@@ -42,7 +42,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4">Tidak ada ruangan.</td>
+                                <td colspan="5">Tidak ada ruangan.</td>
                             </tr>
                         @endforelse
                     </tbody>

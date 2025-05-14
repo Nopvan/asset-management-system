@@ -79,6 +79,7 @@ use App\Http\Controllers\RoomController;
         Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
+        // Routes Location
         Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
         Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locations.show');
         Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
@@ -87,6 +88,16 @@ use App\Http\Controllers\RoomController;
 
         Route::get('/locations/{id}/rooms', [RoomController::class, 'byLocation'])->name('rooms.byLocation');
         Route::get('/rooms/{id}/items', [ItemController::class, 'byRoom'])->name('items.byRoom');
+
+        // Routes Room
+        Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+        Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
+        Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+        Route::get('/rooms/edit/{id}', [RoomController::class, 'edit'])->name('rooms.edit');
+        Route::put('/rooms/{id}', [RoomController::class, 'update'])->name('rooms.update');
+        Route::get('/rooms/export/pdf', [RoomController::class, 'exportPdf'])->name('rooms.export.pdf');
+        Route::get('/rooms/{id}', [RoomController::class, 'show'])->name('rooms.show');
+        
 
 
         Route::get('/category/export-pdf', [CategoryController::class, 'exportPdf'])->name('categories.export.pdf');

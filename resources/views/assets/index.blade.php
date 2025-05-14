@@ -75,18 +75,17 @@
     <div class="content-wrapper container">
 
         <!-- Search Bar -->
-        <!-- Search Bar -->
         <div class="search-bar shadow-sm">
             <form class="row g-3 align-items-end" method="GET" action="{{ route('assets.index') }}">
                 {{-- Kolom Nama Aset --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="search" class="form-label">Cari Aset</label>
                     <input type="text" name="search" id="search" class="form-control"
                         placeholder="Cari Nama, Kategori, atau Ruangan" value="{{ request('search') }}">
                 </div>
 
                 {{-- Kolom Kategori --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="kategori_id" class="form-label">Kategori</label>
                     <select class="form-select" name="kategori_id" id="kategori_id">
                         <option selected disabled>Pilih Kategori</option>
@@ -100,7 +99,7 @@
                 </div>
 
                 {{-- Kolom Ruangan --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="room_id" class="form-label">Ruangan</label>
                     <select class="form-select" name="room_id" id="room_id">
                         <option selected disabled>Pilih Ruangan</option>
@@ -112,20 +111,17 @@
                     </select>
                 </div>
 
-                {{-- Tombol di kanan atas --}}
-                <div class="col-12 d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary me-2">
+                {{-- Tombol Cari dan Reset --}}
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">
                         <i class="fas fa-search"></i> Cari
                     </button>
-                    <a href="{{ route('assets.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('assets.index') }}" class="btn btn-secondary w-100">
                         <i class="fas fa-times"></i> Reset
                     </a>
                 </div>
             </form>
         </div>
-
-
-
 
         <!-- List Asset -->
         <div class="row g-4">

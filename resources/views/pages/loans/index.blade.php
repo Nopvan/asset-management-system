@@ -4,8 +4,8 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">List Loan</h1>
-        <a href="/borrow/export-pdf" class="btn btn-sm btn-success shadow-sm">
-            <i class="fas fa-file-import fa-sm text-white-50"></i> Import
+        <a href="/borrow/export-pdf" class="btn btn-sm btn-danger shadow-sm">
+            <i class="fas fa-file-pdf fa-sm text-white-50"></i> Export PDF
         </a>
     </div>
 

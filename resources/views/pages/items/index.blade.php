@@ -8,8 +8,8 @@
             <a href="/item/create" class="btn btn-sm btn-primary shadow-sm">
                 <i class="fas fa-plus fa-sm text-white-50"></i> Add Item
             </a>
-            <a href="{{ route('items.export.pdf') }}" class="btn btn-sm btn-success shadow-sm">
-                <i class="fas fa-file-import fa-sm text-white-50"></i> Import
+            <a href="{{ route('items.export.pdf') }}" class="btn btn-sm btn-danger shadow-sm">
+                <i class="fas fa-file-pdf fa-sm text-white-50"></i> Export PDF
             </a>
         </div>
     </div>
