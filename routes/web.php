@@ -9,6 +9,7 @@ use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\DashboardController;
 
     Route::get('/', function () {
         return view('index');
@@ -58,9 +59,7 @@ use App\Http\Controllers\RoomController;
 
     // Khusus super_admin & resepsionis
     Route::middleware(['auth', 'role:super_admin,resepsionis'])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('pages.dashboard');
-        });
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Routes Item
         Route::get('/item', [ItemController::class, 'index']);
