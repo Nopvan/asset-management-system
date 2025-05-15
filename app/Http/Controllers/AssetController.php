@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Category;
 use App\Models\Borrow;
 use App\Models\Room;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller;
@@ -13,10 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
-//     public function __construct()
-// {
-//     $this->middleware('auth')->except(['index']);
-// }
 
  public function index(Request $request)
 {
@@ -161,6 +158,58 @@ public function myBorrows()
         ->paginate(10);
 
     return view('assets.borrow_index', compact('borrows'));
+}
+
+public function indexBorrow(Request $request)
+{
+    $query = Room::with('location')->where('status', '!=', 0);
+
+    if ($request->search) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    if ($request->location_id) {
+        $query->where('location_id', $request->location_id);
+    }
+
+    return view('rooms.index', [
+        'rooms' => $query->paginate(9),
+        'locations' => Location::all(),
+    ]);
+}
+
+public function showPinjamFormRoom($id)
+{
+    $room = Room::findOrFail($id);
+    return view('rooms.form_pinjam', compact('room'));
+}
+
+public function pinjamRoom(Request $request, $roomId)
+{
+    $request->validate([
+        'keterangan' => 'required|string|max:255',
+    ]);
+
+    $room = Room::with('items')->findOrFail($roomId);
+
+    // Simpan data peminjaman ruangan
+    // $peminjaman = RoomLoan::create([
+    //     'user_id' => auth()->id(),
+    //     'room_id' => $room->id,
+    //     'keterangan' => $request->keterangan,
+    //     'status' => 'diproses',
+    // ]);
+
+    // Loop item dalam ruangan dan buat record peminjaman per item
+    // foreach ($room->items as $item) {
+    //     ItemLoan::create([
+    //         'room_loan_id' => $peminjaman->id,
+    //         'item_id' => $item->id,
+    //         'qty' => $item->qty, // misalnya semua ikut dipinjam full
+    //     ]);
+    // }
+
+    return redirect()->route('rooms.index')->with('success', 'Peminjaman ruangan berhasil diajukan!');
 }
 
 

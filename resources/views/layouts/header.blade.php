@@ -15,6 +15,7 @@
         </a>
         <div class="d-flex align-items-center">
             <a class="nav-link text-black px-3" href="/">Home</a>
+            <a class="nav-link text-black px-3" href="/rooms-borrow">Rooms</a>
             <a class="nav-link text-black px-3" href="/assets">Assets</a>
 
             @guest

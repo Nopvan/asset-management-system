@@ -29,6 +29,8 @@ use App\Http\Controllers\DashboardController;
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
+    Route::get('/rooms-borrow', [AssetController::class, 'indexBorrow'])->name('rooms.indexborrow');
+
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
@@ -46,6 +48,9 @@ use App\Http\Controllers\DashboardController;
         Route::post('/assets/borrow/{id}/return', [AssetController::class, 'requestReturn'])->name('assets.borrow.return');
         Route::post('/assets/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('assets.borrow.confirm');
         Route::get('/assets/borrow', [AssetController::class, 'myBorrows'])->middleware('auth')->name('assets.borrow.index');
+
+        Route::get('/rooms/{id}/pinjam', [AssetController::class, 'showPinjamFormRoom'])->name('rooms.form_pinjam.form');
+        Route::post('/rooms/{id}/pinjam', [AssetController::class, 'pinjamRoom'])->name('rooms.form_pinjam');
     });
 
     Route::middleware(['auth', 'role:super_admin'])->group(function () {
