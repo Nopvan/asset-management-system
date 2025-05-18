@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('borrows', function (Blueprint $table) {
+        Schema::create('room_loans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
-            $table->integer('jumlah');
-            $table->string('status');
-            $table->date('tanggal_pinjam')->nullable();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('room_id')->constrained();
+            $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali')->nullable();
+            $table->string('status')->default('dipinjam');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
-        });
+});
+
     }
 
     /**
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('borrows');
+        Schema::dropIfExists('room_loans');
     }
 };

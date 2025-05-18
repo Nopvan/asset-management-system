@@ -17,9 +17,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function borrow()
+    // Relasi ke semua peminjaman item (baik manual maupun dari pinjam ruangan)
+    public function itemLoans()
     {
-        return $this->hasMany(Borrow::class);
+        return $this->hasMany(ItemLoan::class);
     }
 
+    // Relasi ke semua peminjaman ruangan
+    public function roomLoans()
+    {
+        return $this->hasMany(RoomLoan::class);
+    }
 }

@@ -10,6 +10,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ItemLoanController;
+use App\Http\Controllers\RoomLoanController;
+use App\Models\Room;
+use App\Models\RoomLoan;
 
     Route::get('/', function () {
         return view('index');
@@ -29,7 +33,7 @@ use App\Http\Controllers\DashboardController;
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/assets', [AssetController::class, 'index'])->name('assets.index');
-    Route::get('/rooms-borrow', [AssetController::class, 'indexBorrow'])->name('rooms.indexborrow');
+    Route::get('/rooms-borrow', [AssetController::class, 'indexBorrowRoom'])->name('rooms.indexborrow');
 
 
     Route::middleware(['auth'])->group(function () {
@@ -48,6 +52,8 @@ use App\Http\Controllers\DashboardController;
         Route::post('/assets/borrow/{id}/return', [AssetController::class, 'requestReturn'])->name('assets.borrow.return');
         Route::post('/assets/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('assets.borrow.confirm');
         Route::get('/assets/borrow', [AssetController::class, 'myBorrows'])->middleware('auth')->name('assets.borrow.index');
+        Route::get('/rooms/borrow', [AssetController::class, 'myBorrowsRoom'])->middleware('auth')->name('rooms.borrow.index');
+        Route::get('/rooms/borrow/{id}', [AssetController::class, 'showBorrowRoom'])->middleware('auth')->name('rooms.borrow.show');
 
         Route::get('/rooms/{id}/pinjam', [AssetController::class, 'showPinjamFormRoom'])->name('rooms.form_pinjam.form');
         Route::post('/rooms/{id}/pinjam', [AssetController::class, 'pinjamRoom'])->name('rooms.form_pinjam');
@@ -108,8 +114,13 @@ use App\Http\Controllers\DashboardController;
 
 
         // Routes Borrow
-        Route::get('/borrow', [BorrowController::class, 'index'])->name('borrow.index');
-        Route::get('/borrow/export-pdf', [BorrowController::class, 'exportPdf'])->name('borrow.export.pdf');
+        Route::get('/borrow', [ItemLoanController::class, 'index'])->name('borrow.index');
+        Route::get('/borrow/export-pdf', [ItemLoanController::class, 'exportPdf'])->name('borrow.export.pdf');
         Route::patch('/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('borrow.confirm');
         Route::patch('/borrow/{id}/reject', [AssetController::class, 'rejectReturn'])->name('borrow.reject');
+
+        Route::get('/borrow-room', [RoomLoanController::class, 'index'])->name('borrow.room.index');
+        Route::get('/borrow-room/{id}', [RoomLoanController::class, 'show'])->name('room-loans.show');
+        Route::get('/borrow-room/export-pdf', [RoomLoanController::class, 'exportPdf'])->name('borrow.room.export.pdf');
+
     });

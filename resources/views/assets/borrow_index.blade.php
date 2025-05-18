@@ -13,7 +13,12 @@
         @include('layouts.header')
 
         <div class="container py-5 content flex-grow-1">
-            <h2 class="mb-4">Riwayat Peminjaman</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Riwayat Peminjaman Item</h2>
+                <a href="/rooms/borrow" class="btn btn-outline-secondary">
+                    <i class="fas fa-door-open me-1"></i> Ruangan
+                </a>
+            </div>
 
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
@@ -31,30 +36,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($borrows as $borrow)
+                    @forelse ($itemLoans as $loan)
                         <tr>
-                            <td>{{ $borrow->item->item_name ?? '-' }}</td>
-                            <td>{{ $borrow->jumlah }}</td>
-                            <td>{{ $borrow->tanggal_pinjam }}</td>
+                            <td>{{ $loan->item->item_name ?? '-' }}</td>
+                            <td>{{ $loan->jumlah }}</td>
+                            <td>{{ $loan->tanggal_pinjam }}</td>
                             <td>
-                                @if ($borrow->tanggal_kembali == null)
-                                    -
-                                @else
-                                    {{ $borrow->tanggal_kembali }}
-                                @endif
+                                {{ $loan->tanggal_kembali ?? '-' }}
                             </td>
                             <td>
-                                @if ($borrow->status == 'pinjam')
+                                @if ($loan->status == 'pinjam')
                                     <span class="badge bg-primary">Pinjam</span>
-                                @elseif($borrow->status == 'pending')
+                                @elseif($loan->status == 'pending')
                                     <span class="badge bg-warning text-dark">Pending</span>
-                                @elseif($borrow->status == 'kembali')
+                                @elseif($loan->status == 'kembali')
                                     <span class="badge bg-success">Kembali</span>
                                 @endif
                             </td>
                             <td>
-                                @if ($borrow->status == 'pinjam')
-                                    <form method="POST" action="{{ route('assets.borrow.return', $borrow->id) }}">
+                                @if ($loan->status == 'pinjam')
+                                    <form method="POST" action="{{ route('assets.borrow.return', $loan->id) }}">
                                         @csrf
                                         <button class="btn btn-sm btn-danger"
                                             onclick="return confirm('Yakin mau mengajukan pengembalian?')">Kembalikan</button>
@@ -66,13 +67,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">Tidak ada data peminjaman.</td>
+                            <td colspan="6" class="text-center">Tidak ada data peminjaman.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
             <div class="d-flex justify-content-center">
-                {{ $borrows->links() }}
+                {{ $itemLoans->links() }}
             </div>
         </div>
 

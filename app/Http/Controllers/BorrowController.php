@@ -24,6 +24,6 @@ class BorrowController extends Controller
 
         $pdf = PDF::loadView('pages.loans.pdf', compact('borrows'));
 
-        return $pdf->download('borrows.pdf');
+        return $pdf->download('item-borrows.pdf');
     }
 }

@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Borrow;
 use App\Models\Room;
 use App\Models\Location;
+use App\Models\ItemLoan;
+use App\Models\RoomLoan;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller;
@@ -151,16 +153,37 @@ public function rejectReturn($id)
 
 public function myBorrows()
 {
-    $borrows = Borrow::with(['user', 'item'])
+    $itemLoans = ItemLoan::with(['user', 'item'])
         ->where('user_id', Auth::id())
         ->orderByRaw("FIELD(status, 'pinjam', 'pending', 'kembali')")
         ->orderByDesc('tanggal_pinjam')
         ->paginate(10);
 
-    return view('assets.borrow_index', compact('borrows'));
+    return view('assets.borrow_index', compact('itemLoans'));
 }
 
-public function indexBorrow(Request $request)
+public function myBorrowsRoom()
+{
+    $roomLoans = RoomLoan::with('room')
+        ->where('user_id', Auth::id())
+        ->orderByRaw("FIELD(status, 'pinjam', 'pending', 'kembali')")
+        ->orderByDesc('tanggal_pinjam')
+        ->paginate(10);
+
+    return view('rooms.borrow_index', compact('roomLoans'));
+}
+
+public function showBorrowRoom($id)
+{
+    $roomLoan = RoomLoan::with(['room', 'itemLoans.item'])
+        ->where('user_id', Auth::id())
+        ->findOrFail($id);
+
+    return view('rooms.view_borrow', compact('roomLoan'));
+}
+
+
+public function indexBorrowRoom(Request $request)
 {
     $query = Room::with('location')->where('status', '!=', 0);
 

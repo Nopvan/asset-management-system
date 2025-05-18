@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Item Loan List PDF</title>
+    <title>Room Loan List PDF</title>
     <style>
         body {
             font-family: sans-serif;
@@ -83,7 +83,7 @@
 </head>
 
 <body>
-    @foreach ($item_loans as $chunkIndex => $chunk)
+    @foreach ($room_loans as $chunkIndex => $chunk)
         @if ($chunkIndex > 0)
             <div class="page-break"></div>
         @endif
@@ -103,15 +103,14 @@
             </div>
         </div>
 
-        <h3 style="text-align: center;">Daftar Peminjaman Barang (Item Loans)</h3>
+        <h3 style="text-align: center;">Daftar Peminjaman Ruangan (Room Loans)</h3>
 
         <table>
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama Peminjam</th>
-                    <th>Nama Barang</th>
-                    <th>Jumlah</th>
+                    <th>Nama Ruangan</th>
                     <th>Status</th>
                     <th>Tanggal Pinjam</th>
                     <th>Tanggal Kembali</th>
@@ -122,8 +121,7 @@
                     <tr>
                         <td>{{ $loop->parent->index * 10 + $loop->index + 1 }}</td>
                         <td>{{ $loan->user->nama ?? '-' }}</td>
-                        <td>{{ $loan->item->item_name ?? '-' }}</td>
-                        <td>{{ $loan->jumlah }}</td>
+                        <td>{{ $loan->room->name ?? '-' }}</td>
                         <td>{{ ucfirst($loan->status) }}</td>
                         <td>{{ $loan->tanggal_pinjam ? \Carbon\Carbon::parse($loan->tanggal_pinjam)->format('d-m-Y') : '-' }}
                         </td>

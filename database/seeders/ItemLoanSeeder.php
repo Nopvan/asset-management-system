@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Borrow;
+use App\Models\ItemLoan;
 use App\Models\User;
 use App\Models\Item;
 use Carbon\Carbon;
 
-class BorrowSeeder extends Seeder
+class ItemLoanSeeder extends Seeder
 {
     public function run(): void
     {
@@ -19,9 +19,9 @@ class BorrowSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $status = fake()->randomElement($statuses);
             $tanggalPinjam = Carbon::now()->subDays(rand(1, 30));
-            $tanggalKembali = $status === 'kembali' ? (clone $tanggalPinjam)->addDays(rand(1, 7)) : null;            
+            $tanggalKembali = $status === 'kembali' ? (clone $tanggalPinjam)->addDays(rand(1, 7)) : null;
 
-            Borrow::create([
+            ItemLoan::create([
                 'user_id' => fake()->randomElement($users),
                 'item_id' => fake()->randomElement($items),
                 'jumlah' => fake()->numberBetween(1, 5),

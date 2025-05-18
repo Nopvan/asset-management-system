@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use App\Models\Room;
 use App\Models\Item;
-use App\Models\Borrow;
+use App\Models\ItemLoan;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -28,10 +28,11 @@ class DashboardController extends Controller
         $damagedAssets = Item::where('conditions', '!=', 'good')->sum('qty');
 
         // Recent activities = recent borrow records with relations loaded
-        $recentActivities = Borrow::with(['user', 'item'])
-            ->latest('tanggal_pinjam')
-            ->limit(3)
-            ->get();
+        $recentActivities = ItemLoan::with(['user', 'item'])
+        ->latest('tanggal_pinjam')
+        ->limit(3)
+        ->get();
+
 
         return view('pages.dashboard', compact(
             'totalBuildings',

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Item;
+use App\Models\RoomLoan;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,7 +22,8 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             RoomSeeder::class,
             ItemSeeder::class,
-            BorrowSeeder::class,
+            RoomLoanSeeder::class,
+            ItemLoanSeeder::class,
         ]);
     }
 }

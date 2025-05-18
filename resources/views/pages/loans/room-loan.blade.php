@@ -3,12 +3,13 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">List Item Loans</h1>
+        <h1 class="h3 mb-0 text-gray-800">List Room Loans</h1>
         <div class="d-flex" style="gap: 0.5rem;">
-            <a href="/borrow-room" class="btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-house fa-sm text-white-50"></i> List Room Loans
+            <a href="/borrow" class="btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-box fa-sm text-white-50"></i> List Item Loans
             </a>
-            <a href="/borrow/export-pdf" class="btn btn-sm btn-danger shadow-sm">
+
+            <a href="/borrow-room/export-pdf" class="btn btn-sm btn-danger shadow-sm">
                 <i class="fas fa-file-pdf fa-sm text-white-50"></i> Export PDF
             </a>
         </div>
@@ -25,22 +26,19 @@
                                 <tr>
                                     <th>No</th>
                                     <th>User</th>
-                                    <th>Item</th>
-                                    <th>Quantity</th>
+                                    <th>Room</th>
                                     <th>Status</th>
-                                    <th>From</th>
                                     <th>Borrow Date</th>
                                     <th>Return Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($loans as $index => $loan)
+                                @forelse ($room_loans as $index => $loan)
                                     <tr>
-                                        <td>{{ $loans->firstItem() + $index }}</td>
+                                        <td>{{ $room_loans->firstItem() + $index }}</td>
                                         <td>{{ $loan->user->nama ?? '-' }}</td>
-                                        <td>{{ $loan->item->item_name ?? '-' }}</td>
-                                        <td>{{ $loan->jumlah }}</td>
+                                        <td>{{ $loan->room->name ?? '-' }}</td>
                                         <td>
                                             @if ($loan->status == 'pending')
                                                 <span class="badge bg-warning">Pending</span>
@@ -52,34 +50,29 @@
                                                 <span class="badge bg-danger">Hilang</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($loan->room_loan_id)
-                                                <span>
-                                                    {{ $loan->room->room->name }}</span>
-                                            @else
-                                                <span>Manual</span>
-                                            @endif
-                                        </td>
                                         <td>{{ $loan->tanggal_pinjam }}</td>
                                         <td>{{ $loan->tanggal_kembali ?? '-' }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center">
+                                                <a href="{{ url('/borrow-room/' . $loan->id) }}"
+                                                    class="btn btn-sm btn-info mx-1">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 @if ($loan->status == 'pending')
                                                     <button type="button" class="btn btn-sm btn-success mx-1"
-                                                        data-bs-toggle="modal" {{-- data-bs-target="#confAcc-{{ $loan->id }}"> --}}> <i
-                                                            class="fas fa-check"></i>
+                                                        data-bs-toggle="modal" {{-- data-bs-target="#confAcc-{{ $loan->id }}" --}}>
+                                                        <i class="fas fa-check"></i>
                                                     </button>
                                                 @else
-                                                    -
                                                 @endif
                                             </div>
                                         </td>
-                                        {{-- @include('pages.item_loans.conf-acc', ['loan' => $loan])
-                                        @include('pages.item_loans.conf-dec', ['loan' => $loan]) --}}
+                                        {{-- @include('pages.room_loans.conf-acc', ['loan' => $loan])
+                                        @include('pages.room_loans.conf-dec', ['loan' => $loan]) --}}
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="9">No item loan data found</td>
+                                        <td colspan="7">No room loan data found</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -87,7 +80,7 @@
 
                         {{-- Pagination --}}
                         <div class="mt-3 d-flex justify-content-center">
-                            {{ $loans->links('pagination::bootstrap-5') }}
+                            {{ $room_loans->links('pagination::bootstrap-5') }}
                         </div>
 
                     </div>
