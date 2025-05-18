@@ -63,19 +63,18 @@
                                         <td>{{ $loan->tanggal_pinjam }}</td>
                                         <td>{{ $loan->tanggal_kembali ?? '-' }}</td>
                                         <td>
-                                            <div class="d-flex justify-content-center">
+                                            <div class="d-flex justify-content-center gap-3">
+                                                <a href="{{ route('item_loans.show', $loan->id) }}"
+                                                    class="btn btn-sm btn-info mx-1">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 @if ($loan->status == 'pending')
-                                                    <button type="button" class="btn btn-sm btn-success mx-1"
-                                                        data-bs-toggle="modal" {{-- data-bs-target="#confAcc-{{ $loan->id }}"> --}}> <i
-                                                            class="fas fa-check"></i>
+                                                    <button type="button" class="btn btn-sm btn-success mx-1">
+                                                        <i class="fas fa-check"></i>
                                                     </button>
-                                                @else
-                                                    -
                                                 @endif
                                             </div>
                                         </td>
-                                        {{-- @include('pages.item_loans.conf-acc', ['loan' => $loan])
-                                        @include('pages.item_loans.conf-dec', ['loan' => $loan]) --}}
                                     </tr>
                                 @empty
                                     <tr>

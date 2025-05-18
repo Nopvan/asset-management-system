@@ -24,12 +24,13 @@
                             style="max-height: 250px;">
                     @else
                         <div class="img-placeholder">
-                            <i class="fas fa-image"></i>
+                            <i class="fas fa-image fa-5x text-secondary"></i>
                         </div>
                     @endif
                 </div>
 
-                <form method="POST" action="{{ route('assets.form_pinjam', $item->id) }}">
+                <form method="POST" enctype="multipart/form-data"
+                    action="{{ route('assets.form_pinjam', $item->id) }}">
                     @csrf
 
                     <div class="mb-3">
@@ -56,10 +57,28 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan / Keperluan</label>
+                        <textarea name="keterangan" class="form-control" rows="3" required></textarea>
+                        @error('keterangan')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Bukti Peminjaman (foto/pdf)</label>
+                        <input type="file" name="photo_diterima" class="form-control" accept=".pdf,.jpg,.jpeg,.png"
+                            required>
+                        @error('photo_diterima')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <button type="submit" class="btn btn-success" onclick="disableSubmit(this)">Pinjam
                         Sekarang</button>
                     <a href="{{ route('assets.index') }}" class="btn btn-secondary">Batal</a>
                 </form>
+
                 <script>
                     document.querySelector('form').addEventListener('keydown', function(e) {
                         if (e.key === 'Enter') {
@@ -71,15 +90,14 @@
                         btn.disabled = true;
                         btn.innerHTML =
                             `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Saving...`;
-                        // Kirim form secara eksplisit
                         setTimeout(() => {
                             btn.closest('form').submit();
-                        }, 100); // Tunggu sebentar sebelum form disubmit
+                        }, 100);
                     }
                 </script>
+
             </div>
         </div>
-
     </div>
 
     @include('layouts.footer')

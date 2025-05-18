@@ -47,8 +47,8 @@ use App\Models\RoomLoan;
     
     // Khusus user
     Route::middleware(['auth', 'role:user'])->group(function () {
-        Route::get('/assets/{id}/pinjam', [AssetController::class, 'showPinjamForm'])->name('assets.form_pinjam.form');
-        Route::post('/assets/{id}/pinjam', [AssetController::class, 'pinjam'])->name('assets.form_pinjam');
+        Route::get('/assets/{item}/pinjam', [AssetController::class, 'showPinjamForm'])->name('assets.form_pinjam.form');
+        Route::post('/assets/{item}/pinjam', [ItemLoanController::class, 'store'])->name('assets.form_pinjam');
         Route::post('/assets/borrow/{id}/return', [AssetController::class, 'requestReturn'])->name('assets.borrow.return');
         Route::post('/assets/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('assets.borrow.confirm');
         Route::get('/assets/borrow', [AssetController::class, 'myBorrows'])->middleware('auth')->name('assets.borrow.index');
@@ -114,7 +114,8 @@ use App\Models\RoomLoan;
 
 
         // Routes Borrow
-        Route::get('/borrow', [ItemLoanController::class, 'index'])->name('borrow.index');
+        Route::get('/loansitem', [ItemLoanController::class, 'index'])->name('borrow.index');
+        Route::get('/loansitem/{id}', [ItemLoanController::class, 'show'])->name('item_loans.show');
         Route::get('/borrow/export-pdf', [ItemLoanController::class, 'exportPdf'])->name('borrow.export.pdf');
         Route::patch('/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('borrow.confirm');
         Route::patch('/borrow/{id}/reject', [AssetController::class, 'rejectReturn'])->name('borrow.reject');

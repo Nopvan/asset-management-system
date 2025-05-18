@@ -17,9 +17,15 @@ return new class extends Migration
             $table->foreignId('room_loan_id')->nullable()->constrained();
             $table->foreignId('item_id')->constrained();
             $table->integer('jumlah');
+            $table->integer('jumlah_kembali')->nullable();
+            $table->integer('jumlah_hilang')->nullable();
+            $table->integer('jumlah_rusak')->nullable();
             $table->string('status')->default('dipinjam');
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->string('photo_diterima')->nullable();
+            $table->string('photo_dikembalikan')->nullable();
             $table->timestamps();
 });
 

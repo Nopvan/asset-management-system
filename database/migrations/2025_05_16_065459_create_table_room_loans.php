@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('tanggal_kembali')->nullable();
             $table->string('status')->default('dipinjam');
             $table->string('keterangan')->nullable();
+            $table->string('photo_diterima')->nullable();
+            $table->string('photo_dikembalikan')->nullable();
             $table->timestamps();
 });
 

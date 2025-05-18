@@ -14,9 +14,15 @@ class ItemLoan extends Model
         'room_loan_id',
         'item_id',
         'jumlah',
+        'jumlah_kembali',
+        'jumlah_hilang',
+        'jumlah_rusak',
         'status',
         'tanggal_pinjam',
         'tanggal_kembali',
+        'keterangan',
+        'photo_diterima',
+        'photo_dikembalikan',
     ];
 
     // Relasi ke item yang dipinjam

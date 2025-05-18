@@ -61,8 +61,8 @@
     <div class="sidebar-heading">
         Loan Management
     </div>
-    <li class="nav-item {{ request()->is('borrow*') ? 'active' : '' }}">
-        <a class="nav-link " href="/borrow">
+    <li class="nav-item {{ request()->is('loansitem*') ? 'active' : '' }}">
+        <a class="nav-link " href="/loansitem">
             <i class="fa-solid fa-table-cells-large"></i>
             <span>List Loans</span></a>
     </li>

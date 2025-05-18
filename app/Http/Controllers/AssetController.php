@@ -215,23 +215,6 @@ public function pinjamRoom(Request $request, $roomId)
 
     $room = Room::with('items')->findOrFail($roomId);
 
-    // Simpan data peminjaman ruangan
-    // $peminjaman = RoomLoan::create([
-    //     'user_id' => auth()->id(),
-    //     'room_id' => $room->id,
-    //     'keterangan' => $request->keterangan,
-    //     'status' => 'diproses',
-    // ]);
-
-    // Loop item dalam ruangan dan buat record peminjaman per item
-    // foreach ($room->items as $item) {
-    //     ItemLoan::create([
-    //         'room_loan_id' => $peminjaman->id,
-    //         'item_id' => $item->id,
-    //         'qty' => $item->qty, // misalnya semua ikut dipinjam full
-    //     ]);
-    // }
-
     return redirect()->route('rooms.index')->with('success', 'Peminjaman ruangan berhasil diajukan!');
 }
 
