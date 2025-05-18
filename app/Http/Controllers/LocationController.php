@@ -64,7 +64,7 @@ class LocationController extends Controller
     public function exportPdf()
 {
     // Ambil semua data lokasi
-    $locations = Location::withCount('rooms')->get()->chunk(10);
+    $locations = Location::withCount('rooms')->get()->chunk(24);
 
     // Kirim ke view PDF
     $pdf = Pdf::loadView('pages.locations.pdf', [

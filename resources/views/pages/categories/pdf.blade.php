@@ -83,6 +83,10 @@
 </head>
 
 <body>
+    @php
+        $counter = 1;
+    @endphp
+
     @foreach ($categories as $chunkIndex => $chunk)
         @if ($chunkIndex > 0)
             <div class="page-break"></div>
@@ -116,7 +120,7 @@
             <tbody>
                 @foreach ($chunk as $category)
                     <tr>
-                        <td>{{ $loop->parent->index * 10 + $loop->index + 1 }}</td>
+                        <td>{{ $counter++ }}</td>
                         <td>{{ $category->cat_name }}</td>
                         <td>{{ $category->cat_code }}</td>
                     </tr>

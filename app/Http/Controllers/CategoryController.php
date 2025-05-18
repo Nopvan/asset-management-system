@@ -66,7 +66,7 @@ class CategoryController extends Controller
 
     public function exportPdf()
     {
-        $categories = Category::get()->chunk(10);
+        $categories = Category::get()->chunk(24);
 
         $pdf = PDF::loadView('pages.categories.pdf', compact('categories'));
 

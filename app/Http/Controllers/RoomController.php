@@ -84,7 +84,7 @@ class RoomController extends Controller
 
     public function exportPdf()
     {
-        $rooms = Room::with('location')->get()->chunk(10);
+        $rooms = Room::with('location')->get()->chunk(24);
 
         $pdf = Pdf::loadView('pages.rooms.pdf', compact('rooms'));
         return $pdf->download('rooms.pdf');

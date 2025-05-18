@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -74,54 +75,85 @@ public function store(Request $request)
         return view('pages.items.show', compact('item'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'cat_id' => 'required',
-            'item_name' => 'required',
-            'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
-            'qty' => 'required',
-            'locations' => 'required',
-        ]);
+   public function update(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'cat_id' => 'required|exists:categories,id',
+        'item_name' => 'required|string',
+        'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
+        'qty' => 'required|integer|min:0',
+        'room_id' => 'required|exists:rooms,id',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-        Item::findOrFail($id)->update($validatedData);
-        return redirect('/item')->with('success', 'Item has been updated');
+    $item = Item::findOrFail($id);
+
+    // Handle image upload
+    if ($request->hasFile('photo')) {
+        // Delete old photo if exists
+        $oldPath = public_path('storage/' . $item->photo);
+        if ($item->photo && file_exists($oldPath)) {
+            unlink($oldPath);
+        }
+
+        // Move new photo
+        $filename = time() . '_' . $request->file('photo')->getClientOriginalName();
+        $request->file('photo')->move(public_path('storage/uploads/items'), $filename);
+
+        // Simpan path yang sama kayak saat create
+        $validatedData['photo'] = 'uploads/items/' . $filename;
     }
 
-    public function destroy($id)
+    $item->update($validatedData);
+
+    return redirect('/item')->with('success', 'Item has been updated');
+}
+
+
+
+  public function destroy($id)
     {
-        $items = Item::find($id);
-        $items->delete();
+        $item = Item::findOrFail($id);
+        // Hapus file foto jika ada
+        if ($item->photo) {
+            $photoPath = public_path('storage/' . $item->photo);
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
+        }
+        // Hapus item dari database
+        $item->delete();
 
         return redirect('/item')->with('success', 'Item has been deleted');
     }
 
+
  public function exportPdf()
-{
-    if (!in_array(Auth::user()->role, ['super_admin', 'resepsionis'])) {
-        abort(403, 'Unauthorized');
+    {
+        if (!in_array(Auth::user()->role, ['super_admin', 'resepsionis'])) {
+            abort(403, 'Unauthorized');
+        }
+        // Ambil semua data item, termasuk kategori dan room, bagi per 10 item
+        $items = Item::with(['category', 'room'])->get()->chunk(24);
+
+        // Kirim ke view PDF yang sudah disiapkan
+        $pdf = Pdf::loadView('pages.items.pdf', [
+            'items' => $items
+        ]);
+
+        // Download hasil PDF-nya
+        return $pdf->download('items.pdf');
     }
-    // Ambil semua data item, termasuk kategori dan room, bagi per 10 item
-    $items = Item::with(['category', 'room'])->get()->chunk(10);
-
-    // Kirim ke view PDF yang sudah disiapkan
-    $pdf = Pdf::loadView('pages.items.pdf', [
-        'items' => $items
-    ]);
-
-    // Download hasil PDF-nya
-    return $pdf->download('items.pdf');
-}
 
 //Untuk menampilkan item via room
 public function byRoom($roomId)
-{
-    $room = Room::with(['items.category', 'location'])->findOrFail($roomId);
-    $items = $room->items()->paginate(10);
-    $location = $room->location;
+    {
+        $room = Room::with(['items.category', 'location'])->findOrFail($roomId);
+        $items = $room->items()->paginate(10);
+        $location = $room->location;
 
-    return view('pages.items.by-room', compact('room', 'items', 'location'));
-}
+        return view('pages.items.by-room', compact('room', 'items', 'location'));
+    }
 
 
 }

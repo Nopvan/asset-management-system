@@ -27,13 +27,13 @@
 
                         <div class="form-group mb-3">
                             <label for="location_id">Location</label>
+                            <input type="text" id="locationSearch" class="form-control" placeholder="Search location...">
                             <select name="location_id" id="location_id"
-                                class="form-control @error('location_id') is-invalid @enderror">
-                                <option value="">-- Select Location --</option>
+                                class="form-control @error('location_id') is-invalid @enderror" style="display: none;">
                                 @foreach ($locations as $location)
                                     <option value="{{ $location->id }}"
                                         {{ old('location_id') == $location->id ? 'selected' : '' }}>
-                                        {{ $location->name }}
+                                        {{ trim($location->name) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -78,18 +78,19 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
 
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-end" style="gap: 7px;">
-                                <a href="{{ route('rooms.index') }}" class="btn btn-outline-secondary">
-                                    Back
-                                </a>
-                                <button type="submit" class="btn btn-primary" onclick="disableSubmit(this)">
-                                    Save
-                                </button>
-                            </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end" style="gap: 7px;">
+                            <a href="{{ route('rooms.index') }}" class="btn btn-outline-secondary">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-primary" onclick="disableSubmit(this)">
+                                Save
+                            </button>
                         </div>
                     </div>
+                </div>
             </form>
 
             <script>
@@ -110,4 +111,60 @@
             </script>
         </div>
     </div>
+
+    @push('styles')
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <style>
+            .ui-autocomplete {
+                max-height: 200px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                background-color: #fff;
+                border: 1px solid #ced4da;
+                border-radius: 0.25rem;
+                box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+                z-index: 1000;
+            }
+
+            .ui-autocomplete .ui-menu-item {
+                padding: 8px 12px;
+                cursor: pointer;
+                color: #495057;
+            }
+
+            .ui-autocomplete .ui-menu-item:hover {
+                background-color: #4e73df;
+                color: #fff;
+            }
+
+            .ui-helper-hidden-accessible {
+                display: none;
+            }
+        </style>
+    @endpush
+
+    @push('scripts')
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // === LOCATION AUTOCOMPLETE ===
+                let locationData = $('#location_id option').map(function() {
+                    return {
+                        label: $(this).text().trim(),
+                        value: $(this).val(),
+                    };
+                }).get();
+
+                $('#locationSearch').autocomplete({
+                    source: locationData,
+                    minLength: 1,
+                    select: function(event, ui) {
+                        $('#location_id').val(ui.item.value); // set ID
+                        $('#locationSearch').val(ui.item.label); // show name
+                        return false;
+                    }
+                });
+            });
+        </script>
+    @endpush
 @endsection

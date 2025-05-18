@@ -83,6 +83,10 @@
 </head>
 
 <body>
+    @php
+        $counter = 1;
+    @endphp
+
     @foreach ($locations as $chunkIndex => $chunk)
         @if ($chunkIndex > 0)
             <div class="page-break"></div>
@@ -118,7 +122,7 @@
             <tbody>
                 @foreach ($chunk as $location)
                     <tr>
-                        <td>{{ $loop->parent->index * 10 + $loop->index + 1 }}</td>
+                        <td>{{ $counter++ }}</td>
                         <td>{{ $location->name }}</td>
                         <td>{{ $location->address }}</td>
                         <td>{{ $location->area }} m²</td>

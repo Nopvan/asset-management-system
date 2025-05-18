@@ -20,6 +20,8 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('template/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+
+    @stack('styles')
 </head>
 
 <body id="page-top">
@@ -103,6 +105,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
+    @stack('scripts')
 </body>
 
 </html>
