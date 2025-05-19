@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 
 class RoomLoanController extends Controller
 {
@@ -40,35 +41,60 @@ class RoomLoanController extends Controller
 
     public function store(Request $request, Room $room)
     {
+                $request->validate([
+            'keterangan' => 'required|string',
+            'photo_diterima' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
+        ]);
+
         DB::beginTransaction();
 
         try {
             $status = 'pending';
             $tanggalPinjam = Carbon::now();
 
+            // Simpan foto diterima jika ada
+            $photoPath = null;
+            if ($request->hasFile('photo_diterima')) {
+                $filename = time() . '_' . $request->file('photo_diterima')->getClientOriginalName();
+                $request->file('photo_diterima')->move(public_path('storage/uploads/room-loans'), $filename);
+                $photoPath = 'uploads/room-loans/' . $filename;
+            }
+
+            // Buat peminjaman ruangan
             $roomLoan = RoomLoan::create([
                 'user_id' => Auth::id(),
                 'room_id' => $room->id,
                 'status' => $status,
                 'tanggal_pinjam' => $tanggalPinjam,
+                'keterangan' => $request->keterangan,
+                'photo_diterima' => $photoPath,
             ]);
+
+            if ($room->items->isEmpty()) {
+                throw new \Exception('Tidak ada item dalam ruangan.');
+            }
 
             foreach ($room->items as $item) {
                 ItemLoan::create([
                     'user_id' => Auth::id(),
                     'item_id' => $item->id,
                     'room_loan_id' => $roomLoan->id,
-                    'jumlah' => 1, // default jumlah, bisa ditambahkan input jika perlu
+                    'jumlah' => $item->qty ?? 1,
                     'status' => $status,
                     'tanggal_pinjam' => $tanggalPinjam,
+                    'keterangan' => 'Dipinjam otomatis dari ruangan',
                 ]);
             }
 
             DB::commit();
-            return redirect()->route('room_loans.index')->with('success', 'Berhasil meminjam ruangan beserta isi.');
+            return redirect()->route('rooms.borrow.index')->with('success', 'Berhasil meminjam ruangan beserta seluruh isi.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Gagal meminjam ruangan: ' . $e->getMessage());
+
+            // Simpan log error untuk debug
+            Log::error('Gagal menyimpan room loan: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Gagal meminjam ruangan: ' . $e->getMessage());
         }
     }
 

@@ -5,7 +5,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">List Room Loans</h1>
         <div class="d-flex" style="gap: 0.5rem;">
-            <a href="/borrow" class="btn btn-sm btn-primary shadow-sm">
+            <a href="/loansitem" class="btn btn-sm btn-primary shadow-sm">
                 <i class="fas fa-box fa-sm text-white-50"></i> List Item Loans
             </a>
 

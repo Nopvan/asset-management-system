@@ -103,17 +103,17 @@ class AssetController extends Controller
 
     public function requestReturn($id) 
     {
-        $borrow = Borrow::findOrFail($id);
+        $loan = ItemLoan::findOrFail($id);
 
-        if ($borrow->status != 'pinjam') {
+        if ($loan->status != 'pinjam') {
             return back()->with('error', 'Asset ini tidak dapat dikembalikan.');
         }
     
-        $borrow->status = 'pending';
-        $borrow->save();
+        $loan->status = 'menunggu_konfirmasi_kembali';
+        $loan->save();
     
         return back()->with('success', 'Permintaan pengembalian dikirim. Menunggu konfirmasi admin.');
-}
+    }
 
 
 public function confirmReturn($id)
@@ -205,17 +205,6 @@ public function showPinjamFormRoom($id)
 {
     $room = Room::findOrFail($id);
     return view('rooms.form_pinjam', compact('room'));
-}
-
-public function pinjamRoom(Request $request, $roomId)
-{
-    $request->validate([
-        'keterangan' => 'required|string|max:255',
-    ]);
-
-    $room = Room::with('items')->findOrFail($roomId);
-
-    return redirect()->route('rooms.index')->with('success', 'Peminjaman ruangan berhasil diajukan!');
 }
 
 

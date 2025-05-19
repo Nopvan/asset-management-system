@@ -56,7 +56,7 @@ use App\Models\RoomLoan;
         Route::get('/rooms/borrow/{id}', [AssetController::class, 'showBorrowRoom'])->middleware('auth')->name('rooms.borrow.show');
 
         Route::get('/rooms/{id}/pinjam', [AssetController::class, 'showPinjamFormRoom'])->name('rooms.form_pinjam.form');
-        Route::post('/rooms/{id}/pinjam', [AssetController::class, 'pinjamRoom'])->name('rooms.form_pinjam');
+        Route::post('/rooms/{room}/pinjam', [RoomLoanController::class, 'store'])->name('rooms.form_pinjam');
     });
 
     Route::middleware(['auth', 'role:super_admin'])->group(function () {
@@ -74,12 +74,15 @@ use App\Models\RoomLoan;
 
         // Routes Item
         Route::get('/item', [ItemController::class, 'index']);
+        Route::get('/items/lost', [ItemController::class, 'lostItems'])->name('items.lost');
+        Route::get('/items/broken', [ItemController::class, 'brokenItems'])->name('items.broken');
         Route::get('/item/create', [ItemController::class, 'create'])->name('item.create');
         Route::get('/item/edit/{id}', [ItemController::class, 'edit'])->name('item.edit');
         Route::post('/item', [ItemController::class, 'store'])->name('item.store');
         Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
         Route::put('/item/{id}', [ItemController::class, 'update'])->name('item.update');
         Route::delete('/item/{id}', [ItemController::class, 'destroy'])->name('item.destroy');
+
 
         // Routes Category
         Route::get('/category', [CategoryController::class, 'index']);
@@ -116,6 +119,8 @@ use App\Models\RoomLoan;
         // Routes Borrow
         Route::get('/loansitem', [ItemLoanController::class, 'index'])->name('borrow.index');
         Route::get('/loansitem/{id}', [ItemLoanController::class, 'show'])->name('item_loans.show');
+        Route::patch('/loansitem/{id}/accept', [ItemLoanController::class, 'accept'])->name('item_loans.accept');
+        Route::patch('/loansitem/return/{id}', [ItemLoanController::class, 'returnItem'])->name('item_loans.return');
         Route::get('/borrow/export-pdf', [ItemLoanController::class, 'exportPdf'])->name('borrow.export.pdf');
         Route::patch('/borrow/{id}/confirm', [AssetController::class, 'confirmReturn'])->name('borrow.confirm');
         Route::patch('/borrow/{id}/reject', [AssetController::class, 'rejectReturn'])->name('borrow.reject');

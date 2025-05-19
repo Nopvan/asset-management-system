@@ -43,13 +43,15 @@
                                         <td>{{ $loan->jumlah }}</td>
                                         <td>
                                             @if ($loan->status == 'pending')
-                                                <span class="badge bg-warning">Pending</span>
+                                                <span>Pending</span>
                                             @elseif ($loan->status == 'pinjam')
-                                                <span class="badge bg-info">Pinjam</span>
+                                                <span>Pinjam</span>
                                             @elseif ($loan->status == 'kembali')
-                                                <span class="badge bg-success">Kembali</span>
+                                                <span>Kembali</span>
                                             @elseif ($loan->status == 'hilang')
-                                                <span class="badge bg-danger">Hilang</span>
+                                                <span>Hilang</span>
+                                            @elseif ($loan->status == 'menunggu_konfirmasi_kembali')
+                                                <span>Menunggu Konfirmasi Kembali</span>
                                             @endif
                                         </td>
                                         <td>
@@ -69,12 +71,22 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 @if ($loan->status == 'pending')
-                                                    <button type="button" class="btn btn-sm btn-success mx-1">
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#accModal-{{ $loan->id }}">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                @elseif ($loan->status == 'menunggu_konfirmasi_kembali')
+                                                    <button type="button" class="btn btn-sm btn-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#accBackModal-{{ $loan->id }}">
                                                         <i class="fas fa-check"></i>
                                                     </button>
                                                 @endif
                                             </div>
                                         </td>
+                                        @include('pages.loans.conf_loan_acc')
+                                        @include('pages.loans.conf_back_acc')
                                     </tr>
                                 @empty
                                     <tr>

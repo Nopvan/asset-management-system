@@ -80,8 +80,8 @@
                     <tr>
                         <th>Foto Saat Dikembalikan</th>
                         <td>
-                            @if ($itemLoan->photo_kembali)
-                                <img src="{{ asset('storage/' . $itemLoan->photo_kembali) }}" alt="Photo Kembali"
+                            @if ($itemLoan->photo_dikembalikan)
+                                <img src="{{ asset('storage/' . $itemLoan->photo_dikembalikan) }}" alt="Photo Kembali"
                                     class="img-thumbnail" style="max-width: 200px;">
                             @else
                                 <span class="text-muted">Belum ada foto</span>

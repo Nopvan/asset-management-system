@@ -15,6 +15,9 @@ class RoomLoan extends Model
         'tanggal_pinjam',
         'tanggal_kembali',
         'status',
+        'keterangan',
+        'photo_diterima',
+        'photo_dikembalikan',
     ];
 
     // Relasi ke user yang meminjam

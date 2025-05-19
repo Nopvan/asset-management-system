@@ -8,9 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body> @include('layouts.header')
+<body>
+    @include('layouts.header')
+
     <div class="container py-5">
         <h2 class="mb-4">Form Peminjaman Ruangan</h2>
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="card">
             <div class="card-body">
@@ -27,7 +40,7 @@
                     @endif
                 </div>
 
-                <form method="POST" action="{{ route('rooms.form_pinjam', $room->id) }}">
+                <form method="POST" action="{{ route('rooms.form_pinjam', $room->id) }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -51,8 +64,17 @@
 
                     <div class="mb-3">
                         <label class="form-label">Keterangan / Keperluan</label>
-                        <textarea name="keterangan" class="form-control" rows="3" required></textarea>
+                        <textarea name="keterangan" class="form-control" rows="3" required>{{ old('keterangan') }}</textarea>
                         @error('keterangan')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Foto Diterima</label>
+                        <input type="file" name="photo_diterima" class="form-control"
+                            accept="image/*,application/pdf">
+                        @error('photo_diterima')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
@@ -61,6 +83,7 @@
                         Sekarang</button>
                     <a href="{{ route('rooms.indexborrow') }}" class="btn btn-secondary">Batal</a>
                 </form>
+
                 <script>
                     document.querySelector('form').addEventListener('keydown', function(e) {
                         if (e.key === 'Enter') {

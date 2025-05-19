@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
@@ -30,35 +31,35 @@ class ItemController extends Controller
     }
 
 
-public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'cat_id' => 'required|exists:categories,id',
-        'item_name' => 'required|string|max:255',
-        'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
-        'qty' => 'required|integer|min:0',
-        'room_id' => 'required|exists:rooms,id',
-        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'cat_id' => 'required|exists:categories,id',
+            'item_name' => 'required|string|max:255',
+            'conditions' => ['required', Rule::in(['good', 'lost', 'broken'])],
+            'qty' => 'required|integer|min:0',
+            'room_id' => 'required|exists:rooms,id',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-    $path = null;
-    if ($request->hasFile('photo')) {
-        $filename = time() . '_' . $request->file('photo')->getClientOriginalName();
-        $request->file('photo')->move(public_path('storage/uploads/items'), $filename);
-        $path = 'uploads/items/' . $filename;
+        $path = null;
+        if ($request->hasFile('photo')) {
+            $filename = time() . '_' . $request->file('photo')->getClientOriginalName();
+            $request->file('photo')->move(public_path('storage/uploads/items'), $filename);
+            $path = 'uploads/items/' . $filename;
+        }
+
+        Item::create([
+            'cat_id' => $validatedData['cat_id'],
+            'item_name' => $validatedData['item_name'],
+            'conditions' => $validatedData['conditions'],
+            'qty' => $validatedData['qty'],
+            'room_id' => $validatedData['room_id'],
+            'photo' => $path,
+        ]);
+
+        return redirect('/item')->with('success', 'Item has been added');
     }
-
-    Item::create([
-        'cat_id' => $validatedData['cat_id'],
-        'item_name' => $validatedData['item_name'],
-        'conditions' => $validatedData['conditions'],
-        'qty' => $validatedData['qty'],
-        'room_id' => $validatedData['room_id'],
-        'photo' => $path,
-    ]);
-
-    return redirect('/item')->with('success', 'Item has been added');
-}
 
     public function edit($id)
     {
@@ -146,7 +147,7 @@ public function store(Request $request)
     }
 
 //Untuk menampilkan item via room
-public function byRoom($roomId)
+    public function byRoom($roomId)
     {
         $room = Room::with(['items.category', 'location'])->findOrFail($roomId);
         $items = $room->items()->paginate(10);
@@ -154,6 +155,39 @@ public function byRoom($roomId)
 
         return view('pages.items.by-room', compact('room', 'items', 'location'));
     }
+
+        public function lostItems()
+    {
+        $items = Item::select(
+                'items.*',
+                DB::raw('SUM(item_loans.jumlah_hilang) as total_lost_from_loans'),
+                DB::raw('CASE WHEN items.conditions = "lost" THEN items.qty ELSE 0 END as lost_from_items')
+            )
+            ->leftJoin('item_loans', 'items.id', '=', 'item_loans.item_id')
+            ->groupBy('items.id')
+            ->havingRaw('total_lost_from_loans > 0 OR items.conditions = "lost"')
+            ->with(['category', 'room'])
+            ->paginate(10);
+
+        return view('pages.items.lost-items', compact('items'));
+    }
+
+    public function brokenItems()
+    {
+        $items = Item::select(
+                'items.*',
+                DB::raw('SUM(item_loans.jumlah_rusak) as total_broken_from_loans'),
+                DB::raw('CASE WHEN items.conditions = "broken" THEN items.qty ELSE 0 END as broken_from_items')
+            )
+            ->leftJoin('item_loans', 'items.id', '=', 'item_loans.item_id')
+            ->groupBy('items.id')
+            ->havingRaw('total_broken_from_loans > 0 OR items.conditions = "broken"')
+            ->with(['category', 'room'])
+            ->paginate(10);
+
+        return view('pages.items.broken-items', compact('items'));
+    }
+
 
 
 }

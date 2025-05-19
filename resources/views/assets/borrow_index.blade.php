@@ -49,6 +49,8 @@
                                     <span class="badge bg-primary">Pinjam</span>
                                 @elseif($loan->status == 'pending')
                                     <span class="badge bg-warning text-dark">Pending</span>
+                                @elseif($loan->status == 'menunggu_konfirmasi_kembali')
+                                    <span class="badge bg-info">Menunggu Konfirmasi Kembali</span>
                                 @elseif($loan->status == 'kembali')
                                     <span class="badge bg-success">Kembali</span>
                                 @endif

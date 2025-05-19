@@ -5,6 +5,11 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Assets</h1>
         <div class="d-flex" style="gap: 0.5rem;">
+            <a href="/items/broken" class="btn btn-sm btn-primary shadow-sm">
+                Broken Items
+            </a>
+            <a href="/items/lost" class="btn btn-sm btn-primary shadow-sm"> Lost Items
+            </a>
             <a href="/item/create" class="btn btn-sm btn-primary shadow-sm">
                 <i class="fas fa-plus fa-sm text-white-50"></i> Add Item
             </a>
