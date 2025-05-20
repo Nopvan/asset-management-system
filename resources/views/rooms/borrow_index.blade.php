@@ -50,20 +50,25 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('rooms.borrow.show', $loan->id) }}" class="btn btn-sm btn-info mx-1">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                @if ($loan->status == 'pinjam')
-                                    <form method="POST" action="{{ route('room-loans.return', $loan->id) }}">
-                                        @csrf
-                                        <button class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Yakin mau mengajukan pengembalian ruangan?')">
-                                            Kembalikan
-                                        </button>
-                                    </form>
-                                @else
-                                    -
-                                @endif
+                                <div class="d-flex justify-content-center align-items-center" style="gap: 0.5rem;">
+                                    {{-- Tombol Lihat --}}
+                                    <a href="{{ route('rooms.borrow.show', $loan->id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    {{-- Tombol Kembalikan (hanya jika status pinjam) --}}
+                                    @if ($loan->status == 'pinjam')
+                                        <form action="{{ route('room_loans.request_return', $loan->id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Kembalikan ruangan ini sekarang?')">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-undo"></i> Kembalikan
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

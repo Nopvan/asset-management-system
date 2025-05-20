@@ -59,8 +59,9 @@
                                 @if ($loan->status == 'pinjam')
                                     <form method="POST" action="{{ route('assets.borrow.return', $loan->id) }}">
                                         @csrf
-                                        <button class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Yakin mau mengajukan pengembalian?')">Kembalikan</button>
+                                        <button class="btn btn-sm btn-warning"
+                                            onclick="return confirm('Yakin mau mengajukan pengembalian?')">
+                                            <i class="fas fa-undo"></i>Kembalikan</button>
                                     </form>
                                 @else
                                     -

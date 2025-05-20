@@ -8,14 +8,13 @@
             <a href="/loansitem" class="btn btn-sm btn-primary shadow-sm">
                 <i class="fas fa-box fa-sm text-white-50"></i> List Item Loans
             </a>
-
             <a href="/borrow-room/export-pdf" class="btn btn-sm btn-danger shadow-sm">
                 <i class="fas fa-file-pdf fa-sm text-white-50"></i> Export PDF
             </a>
         </div>
     </div>
 
-    {{-- Table --}}
+    <!-- Table -->
     <div class="row">
         <div class="col">
             <div class="card shadow">
@@ -41,13 +40,15 @@
                                         <td>{{ $loan->room->name ?? '-' }}</td>
                                         <td>
                                             @if ($loan->status == 'pending')
-                                                <span class="badge bg-warning">Pending</span>
+                                                <span>Pending</span>
                                             @elseif ($loan->status == 'pinjam')
-                                                <span class="badge bg-info">Pinjam</span>
+                                                <span>Pinjam</span>
                                             @elseif ($loan->status == 'kembali')
-                                                <span class="badge bg-success">Kembali</span>
+                                                <span>Kembali</span>
+                                            @elseif ($loan->status == 'menunggu_konfirmasi_kembali')
+                                                <span>Menunggu Konfirmasi Kembali</span>
                                             @elseif ($loan->status == 'hilang')
-                                                <span class="badge bg-danger">Hilang</span>
+                                                <span>Hilang</span>
                                             @endif
                                         </td>
                                         <td>{{ $loan->tanggal_pinjam }}</td>
@@ -58,17 +59,22 @@
                                                     class="btn btn-sm btn-info mx-1">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
+
                                                 @if ($loan->status == 'pending')
                                                     <button type="button" class="btn btn-sm btn-success mx-1"
-                                                        data-bs-toggle="modal" {{-- data-bs-target="#confAcc-{{ $loan->id }}" --}}>
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confAcc-{{ $loan->id }}">
                                                         <i class="fas fa-check"></i>
                                                     </button>
-                                                @else
+                                                @elseif ($loan->status == 'menunggu_konfirmasi_kembali')
+                                                    <button type="button" class="btn btn-sm btn-warning"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confReturn-{{ $loan->id }}">
+                                                        <i class="fas fa-undo"></i>
+                                                    </button>
                                                 @endif
                                             </div>
                                         </td>
-                                        {{-- @include('pages.room_loans.conf-acc', ['loan' => $loan])
-                                        @include('pages.room_loans.conf-dec', ['loan' => $loan]) --}}
                                     </tr>
                                 @empty
                                     <tr>
@@ -78,11 +84,15 @@
                             </tbody>
                         </table>
 
-                        {{-- Pagination --}}
+                        <!-- Pagination -->
                         <div class="mt-3 d-flex justify-content-center">
                             {{ $room_loans->links('pagination::bootstrap-5') }}
                         </div>
 
+                        @foreach ($room_loans as $loan)
+                            @include('pages.loans.conf_backroom_acc', ['loan' => $loan])
+                            @include('pages.loans.conf_loanroom_acc', ['loan' => $loan])
+                        @endforeach
                     </div>
                 </div>
             </div>

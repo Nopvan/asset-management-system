@@ -57,6 +57,7 @@ use App\Models\RoomLoan;
 
         Route::get('/rooms/{id}/pinjam', [AssetController::class, 'showPinjamFormRoom'])->name('rooms.form_pinjam.form');
         Route::post('/rooms/{room}/pinjam', [RoomLoanController::class, 'store'])->name('rooms.form_pinjam');
+        Route::patch('/borrow-room/request-return/{id}', [RoomLoanController::class, 'requestReturn'])->name('room_loans.request_return');
     });
 
     Route::middleware(['auth', 'role:super_admin'])->group(function () {
@@ -128,5 +129,8 @@ use App\Models\RoomLoan;
         Route::get('/borrow-room', [RoomLoanController::class, 'index'])->name('borrow.room.index');
         Route::get('/borrow-room/{id}', [RoomLoanController::class, 'show'])->name('room-loans.show');
         Route::get('/borrow-room/export-pdf', [RoomLoanController::class, 'exportPdf'])->name('borrow.room.export.pdf');
+        Route::patch('/borrow-room/{roomLoan}/accept', [RoomLoanController::class, 'accept'])->name('room_loans.accept');
+        Route::patch('/room_loans/return/{id}', [RoomLoanController::class, 'returnRoom'])->name('room_loans.return');
+
 
     });

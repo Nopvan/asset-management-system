@@ -77,10 +77,10 @@
                                                         <i class="fas fa-check"></i>
                                                     </button>
                                                 @elseif ($loan->status == 'menunggu_konfirmasi_kembali')
-                                                    <button type="button" class="btn btn-sm btn-primary"
+                                                    <button type="button" class="btn btn-sm btn-warning"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#accBackModal-{{ $loan->id }}">
-                                                        <i class="fas fa-check"></i>
+                                                        <i class="fas fa-undo"></i>
                                                     </button>
                                                 @endif
                                             </div>
