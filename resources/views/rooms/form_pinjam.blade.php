@@ -4,42 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Pinjam Ruangan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> {{-- Biar responsif di HP --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .img-placeholder {
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #ccc;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            h2.mb-4 {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .img-placeholder,
+            .img-fluid {
+                max-height: 180px !important;
+            }
+
+            .list-group-item {
+                font-size: 0.9rem;
+            }
+
+            label.form-label {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
     @include('layouts.header')
 
-    <div class="container py-5">
+    <div class="container py-4">
         <h2 class="mb-4">Form Peminjaman Ruangan</h2>
 
         @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
+            <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+            <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         <div class="card">
             <div class="card-body">
 
-                <!-- Foto Ruangan -->
+                {{-- Foto Ruangan --}}
                 <div class="text-center mb-4">
                     @if ($room->photo)
                         <img src="{{ asset('storage/' . $room->photo) }}" alt="Foto Ruangan" class="img-fluid rounded"
                             style="max-height: 250px;">
                     @else
-                        <div class="img-placeholder py-5 text-muted bg-light">
+                        <div class="img-placeholder text-muted bg-light">
                             <i class="fas fa-door-open fa-3x"></i>
                         </div>
                     @endif
                 </div>
 
+                {{-- Form --}}
                 <form method="POST" action="{{ route('rooms.form_pinjam', $room->id) }}" enctype="multipart/form-data">
                     @csrf
 
@@ -79,16 +118,17 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-success" onclick="disableSubmit(this)">Pinjam
-                        Sekarang</button>
-                    <a href="{{ route('rooms.indexborrow') }}" class="btn btn-secondary">Batal</a>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <button type="submit" class="btn btn-success" onclick="disableSubmit(this)">Pinjam
+                            Sekarang</button>
+                        <a href="{{ route('rooms.indexborrow') }}" class="btn btn-secondary">Batal</a>
+                    </div>
                 </form>
 
+                {{-- Prevent Enter Submit + Disable Button --}}
                 <script>
                     document.querySelector('form').addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                        }
+                        if (e.key === 'Enter') e.preventDefault();
                     });
 
                     function disableSubmit(btn) {
@@ -100,9 +140,9 @@
                         }, 100);
                     }
                 </script>
+
             </div>
         </div>
-
     </div>
 
     @include('layouts.footer')

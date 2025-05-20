@@ -3,9 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> {{-- penting untuk responsif --}}
     <title>Pinjam Asset</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .img-placeholder {
+            width: 250px;
+            height: 250px;
+            border: 1px dashed #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1rem;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -80,6 +93,7 @@
                 </form>
 
                 <script>
+                    // Cegah submit form saat user tekan Enter di input manapun
                     document.querySelector('form').addEventListener('keydown', function(e) {
                         if (e.key === 'Enter') {
                             e.preventDefault();

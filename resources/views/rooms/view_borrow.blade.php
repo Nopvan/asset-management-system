@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> {{-- Biar responsif --}}
     <title>Detail Peminjaman Ruangan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -37,32 +38,34 @@
             <h4>Daftar Item yang Dipinjam</h4>
 
             @if ($roomLoan->itemLoans->count())
-                <table class="table table-bordered text-center mt-3">
-                    <thead>
-                        <tr>
-                            <th>Nama Item</th>
-                            <th>Jumlah</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($roomLoan->itemLoans as $itemLoan)
+                <div class="table-responsive"> {{-- Biar bisa scroll di HP --}}
+                    <table class="table table-bordered text-center mt-3">
+                        <thead>
                             <tr>
-                                <td>{{ $itemLoan->item->item_name ?? '-' }}</td>
-                                <td>{{ $itemLoan->jumlah }}</td>
-                                <td>
-                                    @if ($itemLoan->status == 'pinjam')
-                                        <span class="badge bg-primary">Pinjam</span>
-                                    @elseif($itemLoan->status == 'pending')
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    @elseif($itemLoan->status == 'kembali')
-                                        <span class="badge bg-success">Kembali</span>
-                                    @endif
-                                </td>
+                                <th>Nama Item</th>
+                                <th>Jumlah</th>
+                                <th>Status</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($roomLoan->itemLoans as $itemLoan)
+                                <tr>
+                                    <td>{{ $itemLoan->item->item_name ?? '-' }}</td>
+                                    <td>{{ $itemLoan->jumlah }}</td>
+                                    <td>
+                                        @if ($itemLoan->status == 'pinjam')
+                                            <span class="badge bg-primary">Pinjam</span>
+                                        @elseif($itemLoan->status == 'pending')
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @elseif($itemLoan->status == 'kembali')
+                                            <span class="badge bg-success">Kembali</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @else
                 <p class="text-muted">Tidak ada item yang dipinjam dalam ruangan ini.</p>
             @endif

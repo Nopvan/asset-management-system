@@ -14,7 +14,7 @@ class ItemLoanSeeder extends Seeder
     {
         $users = User::where('role', 'user')->pluck('id')->toArray();
         $items = Item::pluck('id')->toArray();
-        $statuses = ['pending', 'kembali', 'pinjam'];
+        $statuses = ['menunggu_konfirmasi_kembali','pending', 'kembali', 'pinjam'];
 
         for ($i = 0; $i < 20; $i++) {
             $status = fake()->randomElement($statuses);

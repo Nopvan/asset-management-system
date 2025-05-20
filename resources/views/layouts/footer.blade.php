@@ -6,11 +6,11 @@
     }
 </style>
 
-
-<footer class="py-2 text-white text-center sticky-footer">
+<footer class="py-2 text-white text-center sticky-footer mt-auto">
     <div class="container">
         <div class="copyright">
-            <span class="mb-0">Copyright &copy; {{ date('Y') }} Peminjaman Aset SMK NAGRAK PURWAKARTA</span>
+            <span class="mb-0">Copyright &copy; {{ date('Y') }}
+                Peminjaman Aset SMK NAGRAK PURWAKARTA</span>
         </div>
     </div>
 </footer>

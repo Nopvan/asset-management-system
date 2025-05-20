@@ -104,7 +104,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title mb-0">Recent Activities</h5>
-                        <a href="/borrow" class="btn btn-sm btn-outline-primary">View All</a>
+                        <a href="/loansitem" class="btn btn-sm btn-outline-primary">View All</a>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered text-center mb-0 table-hover-custom">

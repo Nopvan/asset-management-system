@@ -16,7 +16,7 @@ class RoomLoanSeeder extends Seeder
     {
         $users = User::where('role', 'user')->pluck('id')->toArray();
         $rooms = Room::pluck('id')->toArray();
-        $statuses = ['pending', 'pinjam', 'kembali'];
+        $statuses = ['menunggu_konfirmasi_kembali','pending', 'pinjam', 'kembali'];
 
         for ($i = 0; $i < 10; $i++) {
             $status = fake()->randomElement($statuses);

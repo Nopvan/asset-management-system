@@ -36,6 +36,8 @@
             justify-content: center;
             flex-direction: column;
             color: white;
+            text-align: center;
+            padding: 2rem 1rem;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
 
@@ -45,15 +47,34 @@
             color: #000000;
             font-weight: bold;
             transition: background-color 0.3s, color 0.3s;
-            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
             letter-spacing: 1px;
+            padding: 0.5rem 1.5rem;
         }
 
         .btn-login:hover,
         .btn-aset:hover {
             background-color: #28a745;
             color: #ffffff;
-            transform: scale(1.0);
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .btn-login,
+            .btn-aset {
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
+            }
         }
     </style>
 </head>
